@@ -21,6 +21,12 @@ git clone https://github.com/StanfordASL/constrainedmimic
 cd constrainedmimic
 git submodule update --init --recursive
 ```
+We also need to pull in some dependencies for `unitree_ros2`, following their own [instructions](https://github.com/unitreerobotics/unitree_ros2/blob/668d1ec5a05d1c38d3306bdca7d59f2ba3581a88/README.md?plain=1#L63-L68):
+```
+cd cm_ws/src/third_party/unitree_ros2/cyclonedds_ws/src
+git clone https://github.com/ros2/rmw_cyclonedds -b jazzy
+git clone https://github.com/eclipse-cyclonedds/cyclonedds -b releases/0.10.x 
+```
 
 ### Virtual environment
 
@@ -91,13 +97,7 @@ sudo apt install libglfw3-dev
 sudo apt install ros-jazzy-vrpn
 ```
 
-We'll also need to pull in some dependencies for `unitree_ros2`. In a fresh shell session (without sourcing `/opt/ros/jazzy/setup.bash`), run the following:
-```
-cd constrainedmimic/cm_ws/src/third_party/unitree_ros2/cyclonedds_ws/src
-git clone https://github.com/ros2/rmw_cyclonedds -b jazzy
-git clone https://github.com/eclipse-cyclonedds/cyclonedds -b releases/0.10.x 
-```
-Then, navigate back to the top-level workspace (`constrainedmimic/cm_ws`) and run a build:
+In a fresh shell session (without sourcing `/opt/ros/jazzy/setup.bash`), navigate back to the top-level workspace (`constrainedmimic/cm_ws`) and run a build:
 ```
 ./scripts/build_all.sh
 ```
