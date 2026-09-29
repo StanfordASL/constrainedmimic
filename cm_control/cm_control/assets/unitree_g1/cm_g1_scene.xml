@@ -1,0 +1,7 @@
+<mujoco model="cm_g1_scene">
+
+  <include file="cm_g1_robot_only.xml"/>
+
+  <include file="cm_g1_background.xml"/>
+
+</mujoco>

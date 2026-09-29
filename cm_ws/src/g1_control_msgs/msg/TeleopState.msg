@@ -1,0 +1,10 @@
+float64[29] q
+float64[3] position
+float64[4] quaternion
+float64[3] velocity
+float64[3] omega
+uint8 CONTACT_NONE=0
+uint8 CONTACT_LEFT=1
+uint8 CONTACT_RIGHT=2
+uint8 CONTACT_BOTH=3
+uint8 contact_mode

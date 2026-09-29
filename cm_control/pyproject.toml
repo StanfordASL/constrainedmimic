@@ -1,0 +1,33 @@
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "cm_control"
+version = "0.0.1"
+description = "Whole-Body Operational Space Control Barrier Functions"
+authors = [{ name = "Daniel Morton", email = "danielpmorton@gmail.com" }]
+readme = "README.md"
+keywords = ["control", "barrier", "function", "CBF", "Jax", "operational", "space", "safe", "robotics"]
+dependencies = [
+    "numpy", 
+    "jax",
+    "cbfpy[elastiqp]",
+    "frax",
+    "matplotlib",
+    "pyyaml",
+    "flax",
+    "onnx",
+    "onnxruntime",
+    "mujoco",
+    # ROS2 build deps (TODO: decide if keeping these dependencies separate?)
+    "catkin_pkg",
+    "empy==3.3.4", # Addresses https://github.com/ros2-rust/rosidl_rust/issues/15
+    "lark",
+]
+
+[project.optional-dependencies]
+dev = ["ruff"]
+
+[tool.setuptools.packages.find]
+include = ["cm_control*"]

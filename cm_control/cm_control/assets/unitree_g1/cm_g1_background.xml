@@ -1,0 +1,23 @@
+<mujoco model="cm_g1_background">
+
+  <!-- Scene parameters based on twist2 xml-->
+  <statistic center="1.0 0.7 1.0" extent="0.8"/>
+  <visual>
+    <headlight diffuse="0.6 0.6 0.6" ambient="0.1 0.1 0.1" specular="0.9 0.9 0.9"/>
+    <rgba haze="1 1 1 1"/>
+    <map fogstart="2" fogend="8"/>
+    <global azimuth="-140" elevation="-20"/>
+  </visual>
+  <asset>
+    <texture type="skybox" builtin="gradient" rgb1="1 1 1" rgb2="1 1 1" width="800" height="800"/>
+    <texture type="2d" name="groundplane" builtin="checker" mark="edge" rgb1="1 1 1" rgb2="1 1 1" markrgb="0 0 0"
+      width="300" height="300"/>
+    <material name="groundplane" texture="groundplane" texuniform="true" texrepeat="4 4" reflectance="0" emission="0.35"/>
+  </asset>
+  <worldbody>
+    <geom name="floor" size="0 0 0.01" type="plane" material="groundplane" contype="1" conaffinity="0" priority="1"
+      friction="1.6" condim="3"/>
+      <light diffuse=".5 .5 .5" pos="0 0 5" dir="0 0 -1" castshadow="true"/>
+  </worldbody>
+
+</mujoco>

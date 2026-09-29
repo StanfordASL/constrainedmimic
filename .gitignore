@@ -1,0 +1,35 @@
+# ROS2 build artifacts
+build/
+install/
+log/
+
+# Python artifacts
+*.pyc
+__pycache__
+*.egg-info/
+
+# C++ artifacts
+*.o
+*.so
+*.a
+
+# Python venv management
+*.egg-info/*
+.python-version
+.venv/
+venv/
+env/
+
+# Editors
+.vscode/
+
+# Assorted
+MUJOCO_LOG.TXT
+dump.rdb
+untracked/
+site/
+temp/
+
+# ROS2 bags
+bags/
+rosbag2*
