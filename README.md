@@ -121,7 +121,9 @@ source scripts/setup_hardware.sh
 }
 ```
 
-For citing `frax`, use the following:
+This work also builds on many previous tools developed at Stanford. If you use any of the following in your own work, consider citing:
+
+`frax`:
 ```
 @article{morton2026frax,
   author={Morton, Daniel and Pavone, Marco},
@@ -132,7 +134,7 @@ For citing `frax`, use the following:
 }
 ```
 
-For citing `CBFpy` or `OSCBF`, use the following:
+`CBFpy` or `OSCBF`:
 ```
 @inproceedings{morton2025oscbf,
   author={Morton, Daniel and Pavone, Marco},
@@ -141,5 +143,15 @@ For citing `CBFpy` or `OSCBF`, use the following:
   year={2025},
   pages={187-194},
   doi={10.1109/IROS60139.2025.11246389}
+}
+```
+
+`ElastiQP`:
+```
+@article{morton2026elastiqp,
+  author={Morton, Daniel and Arrizabalaga, Jon and Manchester, Zachary and Pavone, Marco},
+  title={Elasti{QP}: An Always-Feasible QP Solver for Constrained Robot Control},
+  journal={arXiv preprint arXiv:2609.19080},
+  year={2026},
 }
 ```
