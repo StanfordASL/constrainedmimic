@@ -68,8 +68,10 @@ jax.config.update("jax_enable_x64", True)
 
 DEFAULT_MOTION_FILE = str(
     Path(cm_control.__file__).parents[2]
-    / "cm_ws"
-    / "bags"
+    / "cm_control"
+    / "cm_control"
+    / "assets"
+    / "data"
     / "rosbag2_2026_05_06-13_49_25_crop_2046_to_2450.pkl"
 )
 

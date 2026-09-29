@@ -151,7 +151,7 @@ def run_demo(kinematics_only: bool, add_kinematic_cbf: bool, add_dynamic_cbf: bo
 
     # Filepaths to XR data
     cm_root = Path(__file__).parents[3]
-    folder = cm_root / "cm_ws" / "bags"
+    folder = cm_root / "cm_control" / "cm_control" / "assets" / "data"
     file = "rosbag2_2026_05_06-13_49_25_crop_2046_to_2450.pkl"
     file_path = folder / file
 
