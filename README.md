@@ -2,9 +2,8 @@
 
 Safe whole-body control of the Unitree G1
 
-## Overview
-
-(TODO) Add overview of the repo and the python/ROS2 components
+> [!WARNING]  
+> Currently under construction, apologies for any rough edges
 
 ## Prerequisites
 
