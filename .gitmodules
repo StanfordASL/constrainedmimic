@@ -1,13 +1,13 @@
-[submodule "unitree_ros2"]
-	path = cm_ws/src/third_party/unitree_ros2
-	url = https://github.com/danielpmorton/unitree_ros2
-[submodule "vrpn_mocap"]
-	path = cm_ws/src/third_party/vrpn_mocap
-	url = https://github.com/alvinsunyixiao/vrpn_mocap
-[submodule "rosidl_dds"]
-	path = cm_ws/src/rosidl_dds
-	url = https://github.com/ros2/rosidl_dds.git
-	branch = jazzy
 [submodule "third_party/TWIST2"]
 	path = third_party/TWIST2
 	url = https://github.com/amazon-far/TWIST2
+[submodule "cm_ws/src/third_party/unitree_ros2"]
+	path = cm_ws/src/third_party/unitree_ros2
+	url = https://github.com/danielpmorton/unitree_ros2
+[submodule "cm_ws/src/third_party/vrpn_mocap"]
+	path = cm_ws/src/third_party/vrpn_mocap
+	url = https://github.com/alvinsunyixiao/vrpn_mocap
+[submodule "cm_ws/src/rosidl_dds"]
+	path = cm_ws/src/rosidl_dds
+	url = https://github.com/ros2/rosidl_dds.git
+	branch = jazzy
