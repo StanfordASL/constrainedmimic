@@ -40,7 +40,9 @@ baseline comparison with a more aggressive hard constraint than the CBF
 
 import os
 
-os.environ["XLA_FLAGS"] = "--xla_cpu_multi_thread_eigen=false"
+os.environ["XLA_FLAGS"] = (
+    "--xla_cpu_multi_thread_eigen=false --xla_cpu_scheduler_type=CPU_SCHEDULER_TYPE_MEMORY_OPTIMIZED"
+)
 os.environ["OPENBLAS_NUM_THREADS"] = "1"
 os.environ["JAX_PLATFORMS"] = "cpu"
 os.environ["JAX_ENABLE_X64"] = "1"

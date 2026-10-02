@@ -5,7 +5,7 @@
 # JAX configuration
 export JAX_PLATFORMS="cpu"
 export JAX_ENABLE_X64=1
-export XLA_FLAGS="--xla_cpu_multi_thread_eigen=false"
+export XLA_FLAGS="--xla_cpu_multi_thread_eigen=false --xla_cpu_scheduler_type=CPU_SCHEDULER_TYPE_MEMORY_OPTIMIZED"
 export OPENBLAS_NUM_THREADS=1
 
 WS_ROOT="$( cd "$( dirname "${BASH_SOURCE[0]}" )/.." && pwd )"
