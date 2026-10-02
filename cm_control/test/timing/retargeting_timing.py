@@ -32,8 +32,15 @@ class TimingKinematicCBFConfig(BaseKinematicConfig):
         # We want to see: As we increase the number of CBFs, how does the
         # compute frequency decrease?
         # We'll evaluate this in steps of 50
-        assert num_cbfs_to_test % 50 == 0 and num_cbfs_to_test <= 300
+        assert num_cbfs_to_test == 1 or (
+            num_cbfs_to_test % 50 == 0 and num_cbfs_to_test <= 300
+        )
         # self.num_cbfs_to_test = num_cbfs_to_test
+
+        # Also hacky: we also want to see the performance on just 1 CBF
+        # in this case, we don't want to use our obstacle logic and we can
+        # just construct one simpler method
+        self.test_single_cbf = num_cbfs_to_test == 1
 
         # If we add an obstacle into the environment and assign a CBF for
         # collision avoidance for all spheres on the robot body, this will
@@ -41,18 +48,21 @@ class TimingKinematicCBFConfig(BaseKinematicConfig):
         # remaining 4 constraints for each multiple of 50 with some of the
         # joint limit CBFs
         # So, let's spawn some obstacles to test
-        num_robot_spheres = 46
-        self.num_obstacles = num_cbfs_to_test // num_robot_spheres
-        self.num_joint_limit_cbfs = self.num_obstacles * (50 - num_robot_spheres)
-        np.random.seed(0)
-        # Sample some points approximately on a cylinder around the robot
-        distance = np.random.uniform(0.75, 1.5, size=(self.num_obstacles,))
-        thetas = np.random.uniform(0, 2 * np.pi, size=(self.num_obstacles,))
-        z = np.random.uniform(-0.5, 0.5, size=(self.num_obstacles,))
-        x = distance * np.cos(thetas)
-        y = distance * np.sin(thetas)
-        self.obstacle_positions = np.column_stack([x, y, z])
-        self.obstacle_radii = np.random.uniform(0.1, 0.3, size=(self.num_obstacles,))
+        if not self.test_single_cbf:
+            num_robot_spheres = 46
+            self.num_obstacles = num_cbfs_to_test // num_robot_spheres
+            self.num_joint_limit_cbfs = self.num_obstacles * (50 - num_robot_spheres)
+            np.random.seed(0)
+            # Sample some points approximately on a cylinder around the robot
+            distance = np.random.uniform(0.75, 1.5, size=(self.num_obstacles,))
+            thetas = np.random.uniform(0, 2 * np.pi, size=(self.num_obstacles,))
+            z = np.random.uniform(-0.5, 0.5, size=(self.num_obstacles,))
+            x = distance * np.cos(thetas)
+            y = distance * np.sin(thetas)
+            self.obstacle_positions = np.column_stack([x, y, z])
+            self.obstacle_radii = np.random.uniform(
+                0.1, 0.3, size=(self.num_obstacles,)
+            )
 
         super().__init__(
             constrained=True,
@@ -70,6 +80,14 @@ class TimingKinematicCBFConfig(BaseKinematicConfig):
     def h_1(self, z, *args, **kwargs):
         q = z
 
+        # If we just want to test 1 CBF, we can run something much simpler
+        if self.test_single_cbf:
+            right_hand_position = self.robot.right_hand_transform(q)[:3, 3]
+            right_hand_x = right_hand_position[0]
+            x_max = 1.0
+            return jnp.array([x_max - right_hand_x])
+
+        # Otherwise, use our sweep over varying numbers of obstacles in the environment
         robot_collision_positions, robot_collision_radii = (
             self.robot.link_collision_data(q)
         )
@@ -121,7 +139,7 @@ def run(num_cbfs: int):
 
 
 def run_all():
-    num_cbfs = [0, 50, 100, 150, 200, 250, 300]
+    num_cbfs = [0, 1, 50, 100, 150, 200, 250, 300]
     avg_times = []
     jit_times = []
     for num in num_cbfs:
