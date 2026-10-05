@@ -13,7 +13,7 @@ dependencies = [
     "numpy", 
     "jax",
     "cbfpy[elastiqp]",
-    "frax",
+    "frax==0.0.4",
     "matplotlib",
     "pyyaml",
     "flax",
