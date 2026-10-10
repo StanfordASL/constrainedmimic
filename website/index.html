@@ -66,7 +66,7 @@
     <!-- ================= Hero figure ================= -->
     <section id="hero" style="margin-top: 48px;">
       <figure class="figure-card">
-        <img src="./static/images/hero.png" alt="ConstrainedMimic block diagram: constrained retargeting and kinematic filters before the tracking policy, and a dynamic filter after it.">
+        <img width="1928" height="717" src="./static/images/hero.webp" alt="ConstrainedMimic block diagram: constrained retargeting and kinematic filters before the tracking policy, and a dynamic filter after it.">
       </figure>
       <p class="caption hero-caption">
         <strong><em>Where does safety fit into a learning-based humanoid motion tracking stack?</em></strong>
@@ -117,7 +117,7 @@
           <div class="grid cols-2">
             <div class="clip">
               <div class="clip-head"><span class="letter">A</span>Original unsafe reference</div>
-              <video muted loop playsinline preload="metadata" src="./static/videos/karate/karate_chop_kinematics.mp4"></video>
+              <video width="600" height="600" poster="./static/videos/karate/karate_chop_kinematics.jpg" muted loop playsinline preload="metadata" src="./static/videos/karate/karate_chop_kinematics.mp4"></video>
               <div class="clip-foot">
                 <div class="chips"><span class="chip">Dyn <b>off</b></span><span class="chip">Safety <b>off</b></span></div>
                 <div class="outcome bad">Hand/table collision</div>
@@ -125,7 +125,7 @@
             </div>
             <div class="clip">
               <div class="clip-head"><span class="letter">B</span>Constrained retargeting</div>
-              <video muted loop playsinline preload="metadata" src="./static/videos/karate/karate_chop_kinematics_cbf.mp4"></video>
+              <video width="600" height="600" poster="./static/videos/karate/karate_chop_kinematics_cbf.jpg" muted loop playsinline preload="metadata" src="./static/videos/karate/karate_chop_kinematics_cbf.mp4"></video>
               <div class="clip-foot">
                 <div class="chips"><span class="chip">Dyn <b>off</b></span><span class="chip">Safety <b>kin</b></span></div>
                 <div class="outcome good">Collision-free reference</div>
@@ -138,7 +138,7 @@
           <div class="grid cols-3">
             <div class="clip">
               <div class="clip-head"><span class="letter">C</span>Policy tracks safe reference</div>
-              <video muted loop playsinline preload="metadata" src="./static/videos/karate/karate_chop_dynamics_kin_cbf.mp4"></video>
+              <video width="600" height="600" poster="./static/videos/karate/karate_chop_dynamics_kin_cbf.jpg" muted loop playsinline preload="metadata" src="./static/videos/karate/karate_chop_dynamics_kin_cbf.mp4"></video>
               <div class="clip-foot">
                 <div class="chips"><span class="chip">Dyn <b>on</b></span><span class="chip">Safety <b>kin</b></span></div>
                 <div class="outcome bad">Overshoot &rarr; collision</div>
@@ -146,7 +146,7 @@
             </div>
             <div class="clip">
               <div class="clip-head"><span class="letter">D</span>Dynamic filter on unsafe reference</div>
-              <video muted loop playsinline preload="metadata" src="./static/videos/karate/karate_chop_dynamics_dyn_cbf.mp4"></video>
+              <video width="600" height="600" poster="./static/videos/karate/karate_chop_dynamics_dyn_cbf.jpg" muted loop playsinline preload="metadata" src="./static/videos/karate/karate_chop_dynamics_dyn_cbf.mp4"></video>
               <div class="clip-foot">
                 <div class="chips"><span class="chip">Dyn <b>on</b></span><span class="chip">Safety <b>dyn</b></span></div>
                 <div class="outcome good">Collision-free</div>
@@ -154,7 +154,7 @@
             </div>
             <div class="clip">
               <div class="clip-head"><span class="letter">E</span>Kinematic + dynamic safety</div>
-              <video muted loop playsinline preload="metadata" src="./static/videos/karate/karate_chop_dynamics_both_cbf.mp4"></video>
+              <video width="600" height="600" poster="./static/videos/karate/karate_chop_dynamics_both_cbf.jpg" muted loop playsinline preload="metadata" src="./static/videos/karate/karate_chop_dynamics_both_cbf.mp4"></video>
               <div class="clip-foot">
                 <div class="chips"><span class="chip">Dyn <b>on</b></span><span class="chip">Safety <b>kin/dyn</b></span></div>
                 <div class="outcome good">Collision-free, more conservative</div>
@@ -179,14 +179,14 @@
         <div class="grid cols-3">
           <div class="clip">
             <div class="clip-head">Original reference</div>
-            <video muted loop playsinline preload="metadata" src="./static/videos/self_collision/self_collision_kinematics.mp4"></video>
+            <video width="720" height="720" poster="./static/videos/self_collision/self_collision_kinematics.jpg" muted loop playsinline preload="metadata" src="./static/videos/self_collision/self_collision_kinematics.mp4"></video>
             <div class="clip-foot">
               <div class="chips"><span class="chip">Dyn <b>off</b></span><span class="chip">Safety <b>off</b></span></div>
             </div>
           </div>
           <div class="clip">
             <div class="clip-head">Policy + original reference</div>
-            <video muted loop playsinline preload="metadata" src="./static/videos/self_collision/self_collision_dynamics.mp4"></video>
+            <video width="720" height="720" poster="./static/videos/self_collision/self_collision_dynamics.jpg" muted loop playsinline preload="metadata" src="./static/videos/self_collision/self_collision_dynamics.mp4"></video>
             <div class="clip-foot">
               <div class="chips"><span class="chip">Dyn <b>on</b></span><span class="chip">Safety <b>off</b></span></div>
               <div class="outcome bad">Self-collision</div>
@@ -194,7 +194,7 @@
           </div>
           <div class="clip">
             <div class="clip-head">Policy + constrained retargeting + dynamic filter</div>
-            <video muted loop playsinline preload="metadata" src="./static/videos/self_collision/self_collision_dynamics_both_cbf.mp4"></video>
+            <video width="720" height="720" poster="./static/videos/self_collision/self_collision_dynamics_both_cbf.jpg" muted loop playsinline preload="metadata" src="./static/videos/self_collision/self_collision_dynamics_both_cbf.mp4"></video>
             <div class="clip-foot">
               <div class="chips"><span class="chip">Dyn <b>on</b></span><span class="chip">Safety <b>kin/dyn</b></span></div>
               <div class="outcome good">Collision-free</div>
@@ -202,7 +202,7 @@
           </div>
         </div>
         <button class="replay" type="button">↻ Replay in sync</button>
-        <!-- Also available but not shown: self_collision_kinematics_cbf.mp4, _dynamics_kin_cbf.mp4, _dynamics_dyn_cbf.mp4 -->
+        <!-- More variants (kinematics_cbf, dynamics_kin_cbf, dynamics_dyn_cbf) are in untracked/dan_vids/sc/square. -->
       </div>
 
       <!-- Quantitative results -->
@@ -231,22 +231,22 @@
         <div class="grid cols-2">
           <div class="clip">
             <div class="clip-head">Nominal (no filter)</div>
-            <video muted loop playsinline preload="metadata" src="./static/videos/hardware/nominal.mp4"></video>
+            <video width="960" height="540" poster="./static/videos/hardware/nominal.jpg" muted loop playsinline preload="metadata" src="./static/videos/hardware/nominal.mp4"></video>
             <div class="clip-foot"><div class="outcome bad">Min h(z) = &minus;0.41</div></div>
           </div>
           <div class="clip">
             <div class="clip-head">Kinematic only</div>
-            <video muted loop playsinline preload="metadata" src="./static/videos/hardware/kinematic.mp4"></video>
+            <video width="960" height="540" poster="./static/videos/hardware/kinematic.jpg" muted loop playsinline preload="metadata" src="./static/videos/hardware/kinematic.mp4"></video>
             <div class="clip-foot"><div class="outcome bad">Min h(z) = &minus;0.14</div></div>
           </div>
           <div class="clip">
             <div class="clip-head">Dynamic only</div>
-            <video muted loop playsinline preload="metadata" src="./static/videos/hardware/dynamic.mp4"></video>
+            <video width="960" height="540" poster="./static/videos/hardware/dynamic.jpg" muted loop playsinline preload="metadata" src="./static/videos/hardware/dynamic.mp4"></video>
             <div class="clip-foot"><div class="outcome bad">Min h(z) = &minus;0.11</div></div>
           </div>
           <div class="clip">
             <div class="clip-head">Kinematic + dynamic</div>
-            <video muted loop playsinline preload="metadata" src="./static/videos/hardware/kin_dyn.mp4"></video>
+            <video width="960" height="540" poster="./static/videos/hardware/kin_dyn.jpg" muted loop playsinline preload="metadata" src="./static/videos/hardware/kin_dyn.mp4"></video>
             <div class="clip-foot"><div class="outcome good">Min h(z) = +0.02</div></div>
           </div>
         </div>
@@ -272,7 +272,7 @@
         <div class="grid cols-5">
           <div class="clip">
             <div class="clip-head"><span class="letter">A</span>Desired robot motion</div>
-            <video muted loop playsinline preload="metadata" src="./static/videos/smooth_criminal/smooth_criminal_A.mp4"></video>
+            <video width="600" height="600" poster="./static/videos/smooth_criminal/smooth_criminal_A.jpg" muted loop playsinline preload="metadata" src="./static/videos/smooth_criminal/smooth_criminal_A.mp4"></video>
             <div class="clip-foot">
               <div class="chips"><span class="chip">Dyn <b>off</b></span><span class="chip">Safety <b>off</b></span></div>
               <div class="outcome bad">Unstable reference</div>
@@ -280,7 +280,7 @@
           </div>
           <div class="clip">
             <div class="clip-head"><span class="letter">B</span>Add CBF constraints</div>
-            <video muted loop playsinline preload="metadata" src="./static/videos/smooth_criminal/smooth_criminal_cbf_B.mp4"></video>
+            <video width="600" height="600" poster="./static/videos/smooth_criminal/smooth_criminal_cbf_B.jpg" muted loop playsinline preload="metadata" src="./static/videos/smooth_criminal/smooth_criminal_cbf_B.mp4"></video>
             <div class="clip-foot">
               <div class="chips"><span class="chip">Dyn <b>off</b></span><span class="chip">Safety <b>kin</b></span></div>
               <div class="outcome bad">Contact violation</div>
@@ -288,7 +288,7 @@
           </div>
           <div class="clip">
             <div class="clip-head"><span class="letter">C</span>Integrate with constrained kinematics</div>
-            <video muted loop playsinline preload="metadata" src="./static/videos/smooth_criminal/smooth_criminal_cbf_C.mp4"></video>
+            <video width="600" height="600" poster="./static/videos/smooth_criminal/smooth_criminal_cbf_C.jpg" muted loop playsinline preload="metadata" src="./static/videos/smooth_criminal/smooth_criminal_cbf_C.mp4"></video>
             <div class="clip-foot">
               <div class="chips"><span class="chip">Dyn <b>off</b></span><span class="chip">Safety <b>kin</b></span></div>
               <div class="outcome bad">Joint limit violation</div>
@@ -296,7 +296,7 @@
           </div>
           <div class="clip">
             <div class="clip-head"><span class="letter">D</span>Constrained kinematics in the CBF</div>
-            <video muted loop playsinline preload="metadata" src="./static/videos/smooth_criminal/smooth_criminal_cbf_D.mp4"></video>
+            <video width="600" height="600" poster="./static/videos/smooth_criminal/smooth_criminal_cbf_D.jpg" muted loop playsinline preload="metadata" src="./static/videos/smooth_criminal/smooth_criminal_cbf_D.mp4"></video>
             <div class="clip-foot">
               <div class="chips"><span class="chip">Dyn <b>off</b></span><span class="chip">Safety <b>kin</b></span></div>
               <div class="outcome bad">Task-inconsistent motion</div>
@@ -304,7 +304,7 @@
           </div>
           <div class="clip">
             <div class="clip-head"><span class="letter">E</span>Task-consistent objective</div>
-            <video muted loop playsinline preload="metadata" src="./static/videos/smooth_criminal/smooth_criminal_cbf_E.mp4"></video>
+            <video width="600" height="600" poster="./static/videos/smooth_criminal/smooth_criminal_cbf_E.jpg" muted loop playsinline preload="metadata" src="./static/videos/smooth_criminal/smooth_criminal_cbf_E.mp4"></video>
             <div class="clip-foot">
               <div class="chips"><span class="chip">Dyn <b>off</b></span><span class="chip">Safety <b>kin</b></span></div>
               <div class="outcome good">Safe output</div>
@@ -331,7 +331,7 @@
         <div class="grid cols-2">
           <div class="clip">
             <div class="clip-head">&ldquo;Limbo&rdquo;</div>
-            <video muted loop playsinline preload="metadata" src="./static/videos/limbo/limbo_limbo_kinematics_cbf.mp4"></video>
+            <video width="1000" height="600" poster="./static/videos/limbo/limbo_limbo_kinematics_cbf.jpg" muted loop playsinline preload="metadata" src="./static/videos/limbo/limbo_limbo_kinematics_cbf.mp4"></video>
             <div class="clip-foot">
               <div class="chips"><span class="chip">Dyn <b>off</b></span><span class="chip">Safety <b>kin</b></span></div>
               <div class="outcome bad">Dynamically infeasible</div>
@@ -339,7 +339,7 @@
           </div>
           <div class="clip">
             <div class="clip-head">&ldquo;Crouch&rdquo;</div>
-            <video muted loop playsinline preload="metadata" src="./static/videos/limbo/limbo_crouch_kinematics_cbf.mp4"></video>
+            <video width="1000" height="600" poster="./static/videos/limbo/limbo_crouch_kinematics_cbf.jpg" muted loop playsinline preload="metadata" src="./static/videos/limbo/limbo_crouch_kinematics_cbf.mp4"></video>
             <div class="clip-foot">
               <div class="chips"><span class="chip">Dyn <b>off</b></span><span class="chip">Safety <b>kin</b></span></div>
               <div class="outcome good">Dynamically feasible</div>
@@ -364,7 +364,7 @@
       </div>
 
       <div class="clip narrow" style="max-width: 640px;">
-        <video muted loop playsinline preload="metadata" src="./static/videos/breaking_contact/breaking_contact.mp4"></video>
+        <video width="1008" height="648" poster="./static/videos/breaking_contact/breaking_contact.jpg" muted loop playsinline preload="metadata" src="./static/videos/breaking_contact/breaking_contact.mp4"></video>
         <div class="clip-foot" style="align-items: center;">
           <div class="chips"><span class="chip">Dyn <b>on</b></span><span class="chip">Safety <b>kin</b></span></div>
         </div>
@@ -385,7 +385,7 @@
       </div>
 
       <figure class="figure-card">
-        <img src="./static/images/timing.png" alt="Compute frequency vs number of CBF constraints for the kinematic filter, dynamic filter, and constrained retargeting, on desktop and Jetson Orin Nano.">
+        <img width="1953" height="429" loading="lazy" src="./static/images/timing.png" alt="Compute frequency vs number of CBF constraints for the kinematic filter, dynamic filter, and constrained retargeting, on desktop and Jetson Orin Nano.">
       </figure>
       <p class="caption">Compute frequency vs. number of CBF constraints. Left: Intel i9-14900KF. Right: Jetson Orin Nano.</p>
     </section>
