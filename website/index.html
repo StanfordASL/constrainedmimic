@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html lang="en-US">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description"
+    content="ConstrainedMimic: runtime safety constraints for RL-based humanoid whole-body motion tracking, via contact-consistent control barrier functions.">
+  <meta name="keywords" content="Humanoids, Whole-Body Control, Safety, Control Barrier Functions, Reinforcement Learning">
+  <title>Constrained Whole-Body Tracking for Humanoid Robots</title>
+
+  <link rel="icon" href="./static/images/favicon.ico" type="image/x-icon">
+
+  <!-- Apply the saved theme before first paint to avoid a flash. -->
+  <script>
+    try {
+      var theme = localStorage.getItem('theme');
+      if (theme) document.documentElement.setAttribute('data-theme', theme);
+    } catch (e) {}
+  </script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link href="./static/css/index.css" rel="stylesheet">
+
+  <script defer src="./static/js/index.js"></script>
+</head>
+
+<body>
+
+  <a class="home-link" href="https://danielpmorton.github.io/">← danielpmorton</a>
+
+  <button class="theme-toggle" id="theme-toggle" type="button" aria-label="Toggle dark mode">
+    <svg class="icon-moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+    <svg class="icon-sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4.5"/><path d="M12 1.5v2.5M12 20v2.5M4.6 4.6l1.8 1.8M17.6 17.6l1.8 1.8M1.5 12H4M20 12h2.5M4.6 19.4l1.8-1.8M17.6 6.4l1.8-1.8"/></svg>
+  </button>
+
+  <main class="page">
+
+    <!-- ================= Header ================= -->
+    <header class="header">
+      <div class="venue">CoRL 2026</div>
+      <h1 class="title">Constrained Whole-Body Tracking for Humanoid Robots</h1>
+
+      <div class="authors">
+        <a href="https://danielpmorton.github.io/">Daniel Morton</a><sup>1</sup><span class="sep">·</span>
+        <a href="https://stanfordasl.github.io/people/pranit_mohnot/">Pranit Mohnot</a><sup>1</sup><span class="sep">·</span>
+        <a href="https://profiles.stanford.edu/marco-pavone">Marco Pavone</a><sup>1,2</sup>
+      </div>
+      <div class="affiliations">
+        <span><sup>1</sup>Stanford University</span>
+        <span><sup>2</sup>NVIDIA Research</span>
+      </div>
+
+      <nav class="links">
+        <a href="https://arxiv.org/pdf/2606.00374">Paper</a>
+        <a href="https://arxiv.org/abs/2606.00374">arXiv</a>
+        <a href="https://github.com/StanfordASL/constrainedmimic">Code</a>
+        <!-- TODO: replace with the YouTube link once the supplemental video is uploaded. -->
+        <a class="is-todo" href="#">Video</a>
+      </nav>
+    </header>
+
+    <!-- ================= Teaser video ================= -->
+    <section style="margin-top: 48px;">
+      <!-- TODO: swap in a teaser / supplemental video (YouTube embed or <video>). -->
+      <div class="placeholder">
+        <strong>Teaser video</strong>
+        <span>~30–60 s highlight reel: hardware karate chop, antigravity lean, limbo/crouch, dynamic obstacle</span>
+      </div>
+    </section>
+
+    <!-- ================= Overview ================= -->
+    <section id="overview">
+      <h2 class="eyebrow">Overview</h2>
+      <p class="tldr">
+        We present <strong>ConstrainedMimic</strong>, a framework for enforcing safety constraints on top of
+        RL-based whole-body motion tracking policies &mdash; at runtime, with no retraining.
+      </p>
+
+      <div class="features">
+        <div class="feature">
+          <div class="k">01</div>
+          <h4>Flexible runtime constraints</h4>
+          <p>Constraints unknown at training time, with no re-training of the base policy.</p>
+        </div>
+        <div class="feature">
+          <div class="k">02</div>
+          <h4>Contact-consistent</h4>
+          <p>CBFs built on the full contact-constrained kinematics and dynamics, not reduced-order surrogates.</p>
+        </div>
+        <div class="feature">
+          <div class="k">03</div>
+          <h4>Task-consistent</h4>
+          <p>Filtering objectives that respect the policy's implicit task hierarchy.</p>
+        </div>
+        <div class="feature">
+          <div class="k">04</div>
+          <h4>Real-time</h4>
+          <p>Fully differentiable JAX implementation on CPU, GPU, and TPU, well above policy rate.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= Where does safety fit? (hero figure) ================= -->
+    <section id="method">
+      <h2 class="eyebrow">Where does safety fit?</h2>
+      <div class="narrow">
+        <h2 class="statement">Safety can be enforced on both sides of a whole-body tracking policy</h2>
+        <p class="lede">
+          Modern humanoid stacks pass a kinematic reference (from retargeted MoCap, VR teleoperation, or a planner) to an
+          RL tracking policy, which outputs joint commands. This gives two natural places to enforce safety without
+          touching the policy: the <em>input</em> kinematic reference, and the <em>output</em> dynamics. ConstrainedMimic
+          provides three methods across these layers: <strong>constrained retargeting</strong>,
+          <strong>kinematic filters</strong>, and <strong>dynamic filters</strong>.
+        </p>
+      </div>
+      <figure class="figure-card" style="margin-top: 26px;">
+        <img src="./static/images/hero.png" alt="ConstrainedMimic block diagram: constrained retargeting and kinematic filters before the tracking policy, and a dynamic filter after it.">
+      </figure>
+      <!-- TODO (optional): an animated version of the hero figure, or a short method explainer. -->
+    </section>
+
+    <!-- ================= Key findings index ================= -->
+    <section id="findings">
+      <h2 class="eyebrow">Key findings</h2>
+      <ol class="toc narrow" style="max-width: none;">
+        <li><a href="#kp1"><span class="num">01</span>Purely kinematic notions of safety are insufficient for policies with tracking error</a></li>
+        <li><a href="#kp2"><span class="num">02</span>Safety filters for humanoids must account for the contact-constrained kinematics and dynamics</a></li>
+        <li><a href="#kp3"><span class="num">03</span>Discrete kinematic modes impact the dynamic feasibility of single-step constraint enforcement</a></li>
+        <li><a href="#kp4"><span class="num">04</span>Certain constraints inherently require breaking the current contact mode</a></li>
+        <li><a href="#kp5"><span class="num">05</span>ConstrainedMimic is fast and scalable</a></li>
+      </ol>
+    </section>
+
+    <!-- ================= Key point 1: karate chop ================= -->
+    <section id="kp1">
+      <h2 class="eyebrow"><span class="num">01</span>&nbsp;Kinematic safety is not enough</h2>
+      <div class="narrow">
+        <h2 class="statement">Purely kinematic notions of safety are insufficient for policies with tracking error</h2>
+        <p class="lede">
+          A &ldquo;karate chop&rdquo; toward a table, with a hand&ndash;table collision constraint that could
+          <em>not</em> have been known at training time. Constrained retargeting produces a safe reference (B), but the
+          policy overshoots it (C). A dynamic filter on the policy output maintains safety (D), and combining kinematic
+          and dynamic safety is collision-free, though more conservative (E).
+        </p>
+      </div>
+
+      <div class="split" data-sync style="margin-top: 28px;">
+        <div>
+          <div class="group-label">Kinematic visualization</div>
+          <div class="grid cols-2">
+            <div class="clip">
+              <div class="clip-head"><span class="letter">A</span>Original unsafe reference</div>
+              <video muted loop playsinline preload="metadata" src="./static/videos/karate/karate_chop_kinematics.mp4"></video>
+              <div class="clip-foot">
+                <div class="chips"><span class="chip">Dyn <b>off</b></span><span class="chip">Safety <b>off</b></span></div>
+                <div class="outcome bad">Hand/table collision</div>
+              </div>
+            </div>
+            <div class="clip">
+              <div class="clip-head"><span class="letter">B</span>Constrained retargeting</div>
+              <video muted loop playsinline preload="metadata" src="./static/videos/karate/karate_chop_kinematics_cbf.mp4"></video>
+              <div class="clip-foot">
+                <div class="chips"><span class="chip">Dyn <b>off</b></span><span class="chip">Safety <b>kin</b></span></div>
+                <div class="outcome good">Collision-free reference</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div>
+          <div class="group-label">Physics simulation (with tracking policy)</div>
+          <div class="grid cols-3">
+            <div class="clip">
+              <div class="clip-head"><span class="letter">C</span>Policy tracks safe reference</div>
+              <video muted loop playsinline preload="metadata" src="./static/videos/karate/karate_chop_dynamics_kin_cbf.mp4"></video>
+              <div class="clip-foot">
+                <div class="chips"><span class="chip">Dyn <b>on</b></span><span class="chip">Safety <b>kin</b></span></div>
+                <div class="outcome bad">Overshoot &rarr; collision</div>
+              </div>
+            </div>
+            <div class="clip">
+              <div class="clip-head"><span class="letter">D</span>Dynamic filter on unsafe reference</div>
+              <video muted loop playsinline preload="metadata" src="./static/videos/karate/karate_chop_dynamics_dyn_cbf.mp4"></video>
+              <div class="clip-foot">
+                <div class="chips"><span class="chip">Dyn <b>on</b></span><span class="chip">Safety <b>dyn</b></span></div>
+                <div class="outcome good">Collision-free</div>
+              </div>
+            </div>
+            <div class="clip">
+              <div class="clip-head"><span class="letter">E</span>Kinematic + dynamic safety</div>
+              <video muted loop playsinline preload="metadata" src="./static/videos/karate/karate_chop_dynamics_both_cbf.mp4"></video>
+              <div class="clip-foot">
+                <div class="chips"><span class="chip">Dyn <b>on</b></span><span class="chip">Safety <b>kin/dyn</b></span></div>
+                <div class="outcome good">Collision-free, more conservative</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <button class="replay" type="button" style="grid-column: 1 / -1;">↻ Replay in sync</button>
+      </div>
+
+      <!-- Self-collision -->
+      <div class="narrow">
+        <h3 class="sub">The same holds for constraints known at training time</h3>
+        <p class="lede">
+          Self-collision is typically part of the training reward, yet tracking an &ldquo;arm-crossing&rdquo;
+          teleoperation reference with TWIST2 immediately leads to collision between the arms. Even constraints known
+          <em>a priori</em> benefit from explicit safety filtering at deployment time.
+        </p>
+      </div>
+
+      <div data-sync style="margin-top: 22px;">
+        <div class="grid cols-3">
+          <div class="clip">
+            <div class="clip-head">Original reference</div>
+            <video muted loop playsinline preload="metadata" src="./static/videos/self_collision/self_collision_kinematics.mp4"></video>
+            <div class="clip-foot">
+              <div class="chips"><span class="chip">Dyn <b>off</b></span><span class="chip">Safety <b>off</b></span></div>
+            </div>
+          </div>
+          <div class="clip">
+            <div class="clip-head">Policy + original reference</div>
+            <video muted loop playsinline preload="metadata" src="./static/videos/self_collision/self_collision_dynamics.mp4"></video>
+            <div class="clip-foot">
+              <div class="chips"><span class="chip">Dyn <b>on</b></span><span class="chip">Safety <b>off</b></span></div>
+              <div class="outcome bad">Self-collision</div>
+            </div>
+          </div>
+          <div class="clip">
+            <div class="clip-head">Policy + constrained retargeting + dynamic filter</div>
+            <video muted loop playsinline preload="metadata" src="./static/videos/self_collision/self_collision_dynamics_both_cbf.mp4"></video>
+            <div class="clip-foot">
+              <div class="chips"><span class="chip">Dyn <b>on</b></span><span class="chip">Safety <b>kin/dyn</b></span></div>
+              <div class="outcome good">Collision-free</div>
+            </div>
+          </div>
+        </div>
+        <button class="replay" type="button">↻ Replay in sync</button>
+        <!-- Also available but not shown: self_collision_kinematics_cbf.mp4, _dynamics_kin_cbf.mp4, _dynamics_dyn_cbf.mp4 -->
+      </div>
+
+      <!-- Quantitative results -->
+      <div class="narrow">
+        <h3 class="sub">Across 100 randomized trials, both layers together are most reliable</h3>
+        <p class="lede">
+          We vary the constraint parameters (e.g. table height) and the reference playback speed (0.5&times;&ndash;2.0&times;).
+          The base policy is unsafe even for constraints known at training time; kinematic safety reduces violation but
+          suffers from overshoot; dynamic safety operates at the lowest level and reduces violation further; and enabling
+          both is the most reliably safe.
+        </p>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th></th>
+              <th colspan="2" style="text-align: center;">Self-collision</th>
+              <th colspan="2" style="text-align: center;">Karate chop</th>
+            </tr>
+            <tr>
+              <th></th>
+              <th>Frames in violation [%]</th>
+              <th>Max violation [mm]</th>
+              <th>Frames in violation [%]</th>
+              <th>Max violation [mm]</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Base policy</td>
+              <td>37.59 / 37.68</td><td>97.43 / 100.41</td><td>20.59 / 18.89</td><td>424.43 / 253.07</td>
+            </tr>
+            <tr>
+              <td>Kinematic safety</td>
+              <td>8.47 / 7.49</td><td>12.11 / 52.91</td><td>12.55 / 7.59</td><td>100.28 / 64.59</td>
+            </tr>
+            <tr>
+              <td>Dynamic safety</td>
+              <td>0.35 / 1.24</td><td>0.50 / 0.43</td><td>0.28 / 3.10</td><td>0.09 / 5.98</td>
+            </tr>
+            <tr>
+              <td>Kin. + dyn. safety</td>
+              <td>0.02 / 0.00</td><td>0.03 / 0.00</td><td>0.05 / 0.29</td><td>0.02 / 0.25</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="caption">Mean values, TWIST2 / SONIC. Standard deviations are in the paper.</p>
+      <!-- TODO: consider a bar chart here instead of (or alongside) the table. -->
+
+      <!-- Hardware -->
+      <div class="narrow">
+        <h3 class="sub">On hardware, dynamics model mismatch makes both layers necessary</h3>
+        <p class="lede">
+          We recreate the karate chop on a Unitree G1 with TWIST2. In simulation, the dynamic filter alone was the most
+          minimally-conservative safe option; on hardware, unmodeled friction and inertial mismatch lead to small
+          violations when moving fast. Kinematics alone fails due to tracking error, dynamics alone fails due to imperfect
+          modeling &mdash; together, they complement each other.
+        </p>
+      </div>
+
+      <div data-sync style="margin-top: 22px;">
+        <div class="grid cols-2">
+          <div class="clip">
+            <div class="clip-head">Nominal (no filter)</div>
+            <video muted loop playsinline preload="metadata" src="./static/videos/hardware/nominal.mp4"></video>
+            <div class="clip-foot"><div class="outcome bad">Min h(z) = &minus;0.41</div></div>
+          </div>
+          <div class="clip">
+            <div class="clip-head">Kinematic only</div>
+            <video muted loop playsinline preload="metadata" src="./static/videos/hardware/kinematic.mp4"></video>
+            <div class="clip-foot"><div class="outcome bad">Min h(z) = &minus;0.14</div></div>
+          </div>
+          <div class="clip">
+            <div class="clip-head">Dynamic only</div>
+            <video muted loop playsinline preload="metadata" src="./static/videos/hardware/dynamic.mp4"></video>
+            <div class="clip-foot"><div class="outcome bad">Min h(z) = &minus;0.11</div></div>
+          </div>
+          <div class="clip">
+            <div class="clip-head">Kinematic + dynamic</div>
+            <video muted loop playsinline preload="metadata" src="./static/videos/hardware/kin_dyn.mp4"></video>
+            <div class="clip-foot"><div class="outcome good">Min h(z) = +0.02</div></div>
+          </div>
+        </div>
+        <button class="replay" type="button">↻ Replay in sync</button>
+      </div>
+
+      <div class="hardware">
+        <div class="narrow" style="margin: 0;">
+          <p class="lede" style="margin: 0;">
+            Constraint value h(z) over the motion (safe when h(z) &ge; 0). Only the combined kinematic + dynamic
+            configuration stays within the safe set.
+            <!-- TODO: units for h(z) — meters? -->
+          </p>
+        </div>
+        <figure class="figure-card">
+          <img src="./static/images/hardware_hz.png" alt="Plot of constraint value h(z) over time for the four hardware configurations.">
+        </figure>
+      </div>
+    </section>
+
+    <!-- ================= Key point 2: antigravity lean ================= -->
+    <section id="kp2">
+      <h2 class="eyebrow"><span class="num">02</span>&nbsp;Contact matters</h2>
+      <div class="narrow">
+        <h2 class="statement">Safety filters for humanoids must account for the contact-constrained kinematics and dynamics</h2>
+        <p class="lede">
+          Michael Jackson's <em>antigravity lean</em> is impossible without specialized shoes: the center of mass leaves
+          the support polygon. Step through the components of a contact-constrained kinematic safety filter (CoM stability
+          + joint limit CBFs) to see why each piece is needed.
+        </p>
+      </div>
+
+      <div class="stepper" style="margin-top: 28px;">
+        <ul class="steps" role="tablist">
+          <li><button type="button" role="tab"
+              data-src="./static/videos/smooth_criminal/smooth_criminal_A.mp4"
+              data-dyn="off" data-safety="off" data-result="bad"
+              data-outcome="Unstable: violates CoM stability"
+              data-note="The desired motion, with no safety filtering.">
+              <span class="letter">A</span><span>Desired robot motion</span></button></li>
+          <li><button type="button" role="tab"
+              data-src="./static/videos/smooth_criminal/smooth_criminal_cbf_B.mp4"
+              data-dyn="off" data-safety="kin" data-result="bad"
+              data-outcome="Contact violation: feet leave the ground"
+              data-note="A standard min-norm CBF filter on the full, unconstrained kinematics keeps the CoM inside the support polygon, but integrating without contact constraints is infeasible.">
+              <span class="letter">B</span><span>Add CBF constraints</span></button></li>
+          <li><button type="button" role="tab"
+              data-src="./static/videos/smooth_criminal/smooth_criminal_cbf_C.mp4"
+              data-dyn="off" data-safety="kin" data-result="bad"
+              data-outcome="Joint limit violation"
+              data-note="Integrating with the contact-constrained kinematics fixes the feet, but the CBF still uses the unconstrained model, so the constraints are violated.">
+              <span class="letter">C</span><span>Integrate with constrained kinematics</span></button></li>
+          <li><button type="button" role="tab"
+              data-src="./static/videos/smooth_criminal/smooth_criminal_cbf_D.mp4"
+              data-dyn="off" data-safety="kin" data-result="bad"
+              data-outcome="Safe, but task-inconsistent motion"
+              data-note="With the constrained kinematics in the CBF, the result is safe, but the filter induces undue motion at the boundary of safety.">
+              <span class="letter">D</span><span>Constrained kinematics in the CBF</span></button></li>
+          <li><button type="button" role="tab"
+              data-src="./static/videos/smooth_criminal/smooth_criminal_cbf_E.mp4"
+              data-dyn="off" data-safety="kin" data-result="good"
+              data-outcome="Safe, expected behavior"
+              data-note="A task-consistent filtering objective completes the kinematic filter.">
+              <span class="letter">E</span><span>Task-consistent objective</span></button></li>
+        </ul>
+        <div class="stage">
+          <div class="clip">
+            <video muted loop playsinline preload="metadata"></video>
+            <div class="clip-foot">
+              <div class="chips"></div>
+              <div class="outcome"></div>
+            </div>
+          </div>
+          <p class="note"></p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= Key point 3: limbo vs crouch ================= -->
+    <section id="kp3">
+      <h2 class="eyebrow"><span class="num">03</span>&nbsp;Discrete modes</h2>
+      <div class="narrow">
+        <h2 class="statement">Discrete kinematic modes impact the dynamic feasibility of single-step constraint enforcement</h2>
+        <p class="lede">
+          Walking under a head-height obstacle, collision avoidance can be satisfied by bending backward
+          (&ldquo;limbo&rdquo;) or forward (&ldquo;crouch&rdquo;). Both are kinematically safe, but only one is dynamically
+          feasible. CBFs are a single-step method; choosing between modes requires longer-horizon reasoning &mdash;
+          provided by the human in teleoperation, and a target for future work in full autonomy.
+        </p>
+      </div>
+
+      <div data-sync style="margin-top: 22px;">
+        <div class="grid cols-2">
+          <div class="clip">
+            <div class="clip-head">&ldquo;Limbo&rdquo;</div>
+            <video muted loop playsinline preload="metadata" src="./static/videos/limbo/limbo_limbo_kinematics_cbf.mp4"></video>
+            <div class="clip-foot">
+              <div class="chips"><span class="chip">Dyn <b>off</b></span><span class="chip">Safety <b>kin</b></span></div>
+              <div class="outcome bad">Dynamically infeasible</div>
+            </div>
+          </div>
+          <div class="clip">
+            <div class="clip-head">&ldquo;Crouch&rdquo;</div>
+            <video muted loop playsinline preload="metadata" src="./static/videos/limbo/limbo_crouch_kinematics_cbf.mp4"></video>
+            <div class="clip-foot">
+              <div class="chips"><span class="chip">Dyn <b>off</b></span><span class="chip">Safety <b>kin</b></span></div>
+              <div class="outcome good">Dynamically feasible</div>
+            </div>
+          </div>
+        </div>
+        <!-- Note: these two clips have different durations (5.2 s vs 9.5 s), so they drift out of sync after the first loop. -->
+      </div>
+      <!-- TODO (optional): add the policy-tracking (Dyn: ON) versions showing limbo failing and crouch succeeding. -->
+    </section>
+
+    <!-- ================= Key point 4: breaking contact ================= -->
+    <section id="kp4">
+      <h2 class="eyebrow"><span class="num">04</span>&nbsp;Breaking contact</h2>
+      <div class="narrow">
+        <h2 class="statement">Certain constraints inherently require breaking the current contact mode to maintain safety</h2>
+        <p class="lede">
+          A robot standing still cannot avoid an approaching obstacle without taking a step: with feet fixed, collision
+          is inevitable. We use a simple bilevel heuristic: a reduced-order planar CBF produces a safe velocity, a
+          lower-body planner turns this into a kinematic reference, and whole-body safety is enforced on the result,
+          tracked by SONIC.
+        </p>
+      </div>
+
+      <div class="flow">
+        <span class="node">Safe planar motion</span><span class="arrow">&rarr;</span>
+        <span class="node">Lower-body planner</span><span class="arrow">&rarr;</span>
+        <span class="node">Safe whole-body tracking</span>
+      </div>
+
+      <div class="clip narrow" style="max-width: 640px;">
+        <video muted loop playsinline preload="metadata" src="./static/videos/breaking_contact/breaking_contact.mp4"></video>
+        <div class="clip-foot" style="align-items: center;">
+          <div class="chips"><span class="chip">Dyn <b>on</b></span><span class="chip">Safety <b>kin</b></span></div>
+        </div>
+      </div>
+      <!-- NOTE: this video was extracted from the supplemental slides (no source file in dan_vids). Replace with the original if available. -->
+    </section>
+
+    <!-- ================= Key point 5: timing ================= -->
+    <section id="kp5">
+      <h2 class="eyebrow"><span class="num">05</span>&nbsp;Fast and scalable</h2>
+      <div class="narrow">
+        <h2 class="statement">All methods run well above policy frequency, even on edge devices and with hundreds of constraints</h2>
+        <p class="lede">
+          Higher rates mean tighter feedback loops, control over faster dynamics, and room for more constraints in a fixed
+          compute budget. Built on JAX with <a href="https://github.com/StanfordASL/frax">frax</a> and
+          <a href="https://github.com/danielpmorton/cbfpy">CBFpy</a>, the dynamic filter can run faster than the policy
+          itself (250&nbsp;Hz, 5&times; policy rate, in our experiments).
+        </p>
+      </div>
+
+      <div class="stats">
+        <div class="stat"><div class="value">&ge;&nbsp;1 kHz</div><div class="label">Kinematic filter with 100 CBF constraints on a desktop CPU</div></div>
+        <div class="stat"><div class="value">300+</div><div class="label">CBF constraints while staying above the 50 Hz policy rate</div></div>
+        <div class="stat"><div class="value">Edge-ready</div><div class="label">All three methods real-time on a Jetson Orin Nano</div></div>
+      </div>
+      <!-- TODO: double-check the stat tile wording against the final timing numbers. -->
+
+      <figure class="figure-card">
+        <img src="./static/images/timing.png" alt="Compute frequency vs number of CBF constraints for the kinematic filter, dynamic filter, and constrained retargeting, on desktop and Jetson Orin Nano.">
+      </figure>
+      <p class="caption">Compute frequency vs. number of CBF constraints. Left: Intel i9-14900KF. Right: Jetson Orin Nano.</p>
+    </section>
+
+    <!-- ================= Abstract ================= -->
+    <section id="abstract">
+      <h2 class="eyebrow">Abstract</h2>
+      <div class="narrow prose">
+        <p class="lede">
+          Recent advances in reinforcement learning (RL) have demonstrated impressive whole-body agility for humanoid
+          robots, yet ensuring safety and satisfying constraints &mdash; particularly those specified after training
+          &mdash; remains a challenge. Towards this goal, we present ConstrainedMimic, a control framework that leverages
+          whole-body kinematics and dynamics for real-time constraint enforcement within RL tracking policies. By
+          integrating principles from operational space control and control barrier functions (CBFs), we enable the
+          satisfaction of arbitrary runtime constraints on both the kinematic reference motion and the underlying
+          dynamics. In whole-body motion-tracking and teleoperation experiments on a Unitree G1 with a learned policy,
+          we demonstrate collision avoidance (both with the robot body and external obstacles), joint limits, and center
+          of mass stability constraints. By remaining consistent with the current contact mode and tracking objectives,
+          we minimally restrict the capabilities of the policy when constraints are active. Our method is fully
+          differentiable, runs on CPU, GPU, and TPU, and can be deployed at kilohertz control rates.
+        </p>
+        <!-- TODO: abstract above is from the submission; it says "(simulated) Unitree G1" — update for camera-ready with hardware. -->
+      </div>
+    </section>
+
+    <!-- ================= Code ================= -->
+    <section id="code">
+      <h2 class="eyebrow">Code</h2>
+      <div class="narrow">
+        <p class="lede">
+          ConstrainedMimic is open source at
+          <a href="https://github.com/StanfordASL/constrainedmimic">github.com/StanfordASL/constrainedmimic</a>.
+          <span class="todo">TODO: one-line install / quickstart, and what's included (sim demos, ROS2 interface, ...)</span>
+        </p>
+        <pre><button class="copy" type="button">Copy</button><code>git clone https://github.com/StanfordASL/constrainedmimic
+# TODO: installation / demo commands</code></pre>
+      </div>
+    </section>
+
+    <!-- ================= Limitations ================= -->
+    <section id="limitations">
+      <h2 class="eyebrow">Limitations &amp; future work</h2>
+      <div class="narrow">
+        <div class="limitations">
+          <div><strong>Higher-level safety</strong>Single-step CBFs can't reason over discrete decisions or long horizons.</div>
+          <div><strong>Disturbances</strong>Filters minimally intervene with recovery behaviors, but don't account for fall-inducing disturbances.</div>
+          <div><strong>Estimation</strong>Dynamic filters assume reliable knowledge of the contact mode.</div>
+          <div><strong>Distribution shift</strong>Dynamic filters can push the policy out of distribution; fine-tuning is future work.</div>
+          <div><strong>Perception</strong>Collision geometry is currently assumed known, rather than from onboard sensing.</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= BibTeX ================= -->
+    <section id="bibtex">
+      <h2 class="eyebrow">BibTeX</h2>
+      <!-- TODO: finalize with proceedings info (PMLR volume, pages) once available. -->
+      <pre><button class="copy" type="button">Copy</button><code>@inproceedings{morton2026constrainedmimic,
+  title     = {Constrained Whole-Body Tracking for Humanoid Robots},
+  author    = {Morton, Daniel and Mohnot, Pranit and Pavone, Marco},
+  booktitle = {Conference on Robot Learning (CoRL)},
+  year      = {2026}
+}</code></pre>
+    </section>
+
+    <footer class="footer">
+      <span>dmorton [at] stanford [dot] edu</span>
+      <span><a href="https://stanfordasl.github.io/">Stanford Autonomous Systems Lab</a></span>
+    </footer>
+
+  </main>
+
+</body>
+
+</html>
