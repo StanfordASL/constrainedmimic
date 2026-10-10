@@ -57,10 +57,26 @@
         <a href="https://arxiv.org/pdf/2606.00374">Paper</a>
         <a href="https://arxiv.org/abs/2606.00374">arXiv</a>
         <a href="https://github.com/StanfordASL/constrainedmimic">Code</a>
-        <!-- TODO: replace with the YouTube link once the supplemental video is uploaded. -->
-        <a class="is-todo" href="#">Video</a>
+        <!-- TODO: uncomment and add the YouTube link once the supplemental video is uploaded.
+        <a href="#">Video</a>
+        -->
       </nav>
     </header>
+
+    <!-- ================= Hero figure ================= -->
+    <section id="hero" style="margin-top: 48px;">
+      <figure class="figure-card">
+        <img src="./static/images/hero.png" alt="ConstrainedMimic block diagram: constrained retargeting and kinematic filters before the tracking policy, and a dynamic filter after it.">
+      </figure>
+      <p class="caption hero-caption">
+        <strong><em>Where does safety fit into a learning-based humanoid motion tracking stack?</em></strong>
+        We approach safety from both the kinematics and dynamics levels, addressing safety from both sides (input and
+        output) of the policy. On the kinematics side, constraints can naturally fit into the IK-based retargeting process
+        between human and robot form-factors, or be applied as a safety filter on motions already mapped to the robot
+        geometry. On the dynamics side, a potentially unsafe output from the policy can be passed through a safety filter
+        prior to execution on the robot.
+      </p>
+    </section>
 
     <!-- ================= Abstract ================= -->
     <section id="abstract" style="margin-top: 64px;">
@@ -82,38 +98,9 @@
       </div>
     </section>
 
-    <!-- ================= Where does safety fit? (hero figure) ================= -->
-    <section id="method">
-      <div class="narrow">
-        <h2 class="statement">Safety can be enforced on both sides of a whole-body tracking policy</h2>
-        <p class="lede">
-          Modern humanoid stacks pass a kinematic reference (from retargeted MoCap, VR teleoperation, or a planner) to an
-          RL tracking policy, which outputs joint commands. This gives two natural places to enforce safety without
-          touching the policy: the <em>input</em> kinematic reference, and the <em>output</em> dynamics. ConstrainedMimic
-          provides three methods across these layers: <strong>constrained retargeting</strong>,
-          <strong>kinematic filters</strong>, and <strong>dynamic filters</strong>.
-        </p>
-      </div>
-      <figure class="figure-card" style="margin-top: 26px;">
-        <img src="./static/images/hero.png" alt="ConstrainedMimic block diagram: constrained retargeting and kinematic filters before the tracking policy, and a dynamic filter after it.">
-      </figure>
-      <!-- TODO (optional): an animated version of the hero figure, or a short method explainer. -->
-    </section>
-
-    <!-- ================= Key findings index ================= -->
-    <section id="findings">
-      <h2 class="eyebrow">Key findings</h2>
-      <ol class="toc narrow" style="max-width: none;">
-        <li><a href="#kp1"><span class="num">01</span>Purely kinematic notions of safety are insufficient for policies with tracking error</a></li>
-        <li><a href="#kp2"><span class="num">02</span>Safety filters for humanoids must account for the contact-constrained kinematics and dynamics</a></li>
-        <li><a href="#kp3"><span class="num">03</span>Discrete kinematic modes impact the dynamic feasibility of single-step constraint enforcement</a></li>
-        <li><a href="#kp4"><span class="num">04</span>Certain constraints inherently require breaking the current contact mode</a></li>
-        <li><a href="#kp5"><span class="num">05</span>ConstrainedMimic is fast and scalable</a></li>
-      </ol>
-    </section>
-
     <!-- ================= Key point 1: karate chop ================= -->
     <section id="kp1">
+      <h2 class="eyebrow">Overview</h2>
       <div class="narrow">
         <h2 class="statement">Purely kinematic notions of safety are insufficient for policies with tracking error</h2>
         <p class="lede">
@@ -374,12 +361,6 @@
           lower-body planner turns this into a kinematic reference, and whole-body safety is enforced on the result,
           tracked by SONIC.
         </p>
-      </div>
-
-      <div class="flow">
-        <span class="node">Safe planar motion</span><span class="arrow">&rarr;</span>
-        <span class="node">Lower-body planner</span><span class="arrow">&rarr;</span>
-        <span class="node">Safe whole-body tracking</span>
       </div>
 
       <div class="clip narrow" style="max-width: 640px;">

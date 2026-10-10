@@ -268,7 +268,6 @@ code {
 }
 .links a:hover { border-color: var(--accent); color: var(--accent); }
 .links a::after { content: "↗"; color: var(--faint); }
-.links a.is-todo { border-style: dashed; color: var(--faint); }
 
 /* ---------- Media building blocks ---------- */
 
@@ -389,49 +388,13 @@ figcaption, .caption {
 }
 .replay:hover { color: var(--accent); border-color: var(--accent); }
 
-/* ---------- Key-point index ---------- */
-
-.toc {
-  display: flex;
-  flex-direction: column;
-  margin: 0;
-  padding: 0;
-  list-style: none;
-  counter-reset: kp;
+.hero-caption {
+  max-width: 820px;
+  margin: 14px auto 0;
+  text-align: left;
+  line-height: 1.55;
 }
-
-.toc a {
-  display: grid;
-  grid-template-columns: 36px 1fr;
-  gap: 10px;
-  padding: 11px 0;
-  border-top: 1px solid var(--line);
-  transition: color 0.2s;
-}
-.toc li:last-child a { border-bottom: 1px solid var(--line); }
-.toc a:hover { color: var(--accent); }
-.toc .num { font: 500 12px/1.7 var(--font-mono); color: var(--faint); }
-
-/* ---------- Flow (bilevel structure) ---------- */
-
-.flow {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  margin: 22px 0;
-}
-
-.flow .node {
-  padding: 8px 12px;
-  border: 1px solid var(--line);
-  border-radius: 8px;
-  background: var(--surface);
-  font-size: 13px;
-  font-weight: 500;
-}
-.flow .arrow { color: var(--faint); font-family: var(--font-mono); }
+.hero-caption strong { color: var(--fg); }
 
 /* ---------- Code + BibTeX ---------- */
 
