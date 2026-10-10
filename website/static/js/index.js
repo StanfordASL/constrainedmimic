@@ -59,31 +59,6 @@ document.addEventListener('DOMContentLoaded', function () {
     if (!grouped.has(v)) videoObserver.observe(v);
   });
 
-  // Steppers: a list of steps on the left, one video stage on the right.
-  document.querySelectorAll('.stepper').forEach(function (stepper) {
-    var buttons = stepper.querySelectorAll('.steps button');
-    var video = stepper.querySelector('.stage video');
-    var chips = stepper.querySelector('.stage .chips');
-    var outcome = stepper.querySelector('.stage .outcome');
-    var note = stepper.querySelector('.stage .note');
-
-    function select(button) {
-      buttons.forEach(function (b) { b.setAttribute('aria-selected', b === button ? 'true' : 'false'); });
-      video.src = button.dataset.src;
-      play(video);
-      chips.innerHTML = '<span class="chip">Dynamics <b>' + button.dataset.dyn + '</b></span>' +
-        '<span class="chip">Safety <b>' + button.dataset.safety + '</b></span>';
-      outcome.className = 'outcome ' + button.dataset.result;
-      outcome.textContent = button.dataset.outcome;
-      note.innerHTML = button.dataset.note || '';
-    }
-
-    buttons.forEach(function (button) {
-      button.addEventListener('click', function () { select(button); });
-    });
-    select(buttons[0]);
-  });
-
   // Copy buttons on code blocks.
   document.querySelectorAll('.copy').forEach(function (button) {
     button.addEventListener('click', function () {

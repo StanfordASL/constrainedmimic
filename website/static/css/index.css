@@ -289,30 +289,6 @@ figcaption, .caption {
   text-align: center;
 }
 
-.placeholder {
-  display: grid;
-  place-items: center;
-  align-content: center;
-  gap: 6px;
-  aspect-ratio: 16 / 9;
-  padding: 20px;
-  border: 1.5px dashed var(--faint);
-  border-radius: 12px;
-  color: var(--faint);
-  text-align: center;
-  font: 400 12.5px/1.5 var(--font-mono);
-}
-.placeholder strong { color: var(--muted); font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase; }
-
-/* Inline text placeholder, so unfinished copy is easy to spot. */
-.todo {
-  padding: 1px 5px;
-  border-radius: 4px;
-  background: rgba(230, 170, 30, 0.16);
-  color: var(--fg);
-  font: 400 12.5px var(--font-mono);
-}
-
 .clip { min-width: 0; }
 
 .clip video {
@@ -377,6 +353,7 @@ figcaption, .caption {
 .grid.cols-2 { grid-template-columns: repeat(2, 1fr); }
 .grid.cols-3 { grid-template-columns: repeat(3, 1fr); }
 .grid.cols-4 { grid-template-columns: repeat(4, 1fr); }
+.grid.cols-5 { grid-template-columns: repeat(5, 1fr); gap: 16px 12px; }
 
 /* Karate layout: a kinematic group and a physics group, mirroring the paper figure. */
 .split {
@@ -411,87 +388,6 @@ figcaption, .caption {
   cursor: pointer;
 }
 .replay:hover { color: var(--accent); border-color: var(--accent); }
-
-/* ---------- Stepper (sequential ablation) ---------- */
-
-.stepper {
-  display: grid;
-  grid-template-columns: 260px 1fr;
-  gap: 28px;
-  align-items: start;
-}
-
-.steps {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-  margin: 0;
-  padding: 0;
-  list-style: none;
-}
-
-.steps button {
-  display: grid;
-  grid-template-columns: 22px 1fr;
-  gap: 6px;
-  width: 100%;
-  padding: 10px 12px;
-  border: 1px solid transparent;
-  border-radius: 8px;
-  background: none;
-  color: var(--muted);
-  font: inherit;
-  font-size: 13.5px;
-  line-height: 1.4;
-  text-align: left;
-  cursor: pointer;
-  transition: background 0.15s, color 0.15s, border-color 0.15s;
-}
-
-.steps button:hover { color: var(--fg); background: var(--accent-soft); }
-
-.steps button[aria-selected="true"] {
-  border-color: var(--line);
-  background: var(--surface);
-  color: var(--fg);
-  font-weight: 500;
-}
-
-.steps .letter { font: 500 11.5px/1.75 var(--font-mono); color: var(--faint); }
-.steps button[aria-selected="true"] .letter { color: var(--accent); }
-
-.stage .clip video { max-width: 480px; margin: 0 auto; }
-.stage .clip-foot { align-items: center; text-align: center; }
-.stage .note { max-width: 480px; margin: 10px auto 0; font-size: 13.5px; color: var(--muted); text-align: center; }
-
-/* ---------- Overview ---------- */
-
-.tldr {
-  margin: 0 auto;
-  max-width: 720px;
-  font-size: 18px;
-  line-height: 1.55;
-  text-align: center;
-  text-wrap: balance;
-}
-
-.features {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 14px;
-  margin-top: 30px;
-}
-
-.feature {
-  padding: 16px;
-  border: 1px solid var(--line);
-  border-radius: 10px;
-  background: var(--surface);
-}
-
-.feature .k { font: 500 11px var(--font-mono); color: var(--accent); letter-spacing: 0.08em; }
-.feature h4 { margin: 8px 0 4px; font-size: 14.5px; font-weight: 600; line-height: 1.35; }
-.feature p { margin: 0; font-size: 13px; color: var(--muted); }
 
 /* ---------- Key-point index ---------- */
 
@@ -537,53 +433,6 @@ figcaption, .caption {
 }
 .flow .arrow { color: var(--faint); font-family: var(--font-mono); }
 
-/* ---------- Stats + table ---------- */
-
-.stats {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 14px;
-  margin: 26px 0;
-}
-
-.stat {
-  padding: 16px;
-  border: 1px solid var(--line);
-  border-radius: 10px;
-  background: var(--surface);
-}
-.stat .value { font-size: 26px; font-weight: 600; letter-spacing: -0.02em; line-height: 1.1; font-variant-numeric: tabular-nums; }
-.stat .label { margin-top: 6px; font-size: 13px; color: var(--muted); }
-
-.table-wrap { overflow-x: auto; margin-top: 18px; }
-
-table {
-  width: 100%;
-  border-collapse: collapse;
-  font-size: 13px;
-  font-variant-numeric: tabular-nums;
-}
-
-th, td { padding: 9px 10px; border-bottom: 1px solid var(--line); text-align: right; white-space: nowrap; }
-th:first-child, td:first-child { text-align: left; }
-thead th { font: 500 11px var(--font-mono); letter-spacing: 0.06em; text-transform: uppercase; color: var(--faint); }
-thead tr:first-child th { color: var(--muted); }
-tbody tr:last-child td { font-weight: 600; }
-td .pm { color: var(--faint); font-size: 11.5px; }
-
-.legend { display: flex; justify-content: center; gap: 18px; margin-top: 10px; font: 400 12px var(--font-mono); color: var(--muted); }
-.swatch { display: inline-block; width: 9px; height: 9px; margin-right: 6px; border-radius: 2px; vertical-align: 0; }
-
-/* ---------- Hardware ---------- */
-
-.hardware {
-  display: grid;
-  grid-template-columns: 3fr 2fr;
-  gap: 24px;
-  align-items: center;
-  margin-top: 26px;
-}
-
 /* ---------- Code + BibTeX ---------- */
 
 pre {
@@ -613,10 +462,6 @@ pre code { padding: 0; background: none; font: inherit; }
 }
 .copy:hover { color: var(--accent); border-color: var(--accent); }
 
-.limitations { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px 28px; margin-top: 18px; }
-.limitations div { font-size: 14px; color: var(--muted); }
-.limitations strong { display: block; color: var(--fg); font-size: 14px; }
-
 /* ---------- Footer ---------- */
 
 .footer {
@@ -637,18 +482,13 @@ pre code { padding: 0; background: none; font: inherit; }
 
 @media (max-width: 860px) {
   .split { grid-template-columns: 1fr; }
-  .features { grid-template-columns: repeat(2, 1fr); }
-  .stepper { grid-template-columns: 1fr; }
-  .steps { flex-direction: row; overflow-x: auto; }
-  .steps button { min-width: 150px; }
-  .hardware { grid-template-columns: 1fr; }
+  .grid.cols-5 { grid-template-columns: repeat(3, 1fr); }
 }
 
 @media (max-width: 640px) {
   .page { padding: 64px 16px 40px; }
   .title { font-size: 28px; }
   section { margin-top: 64px; }
-  .grid.cols-3, .grid.cols-4 { grid-template-columns: repeat(2, 1fr); }
-  .features, .stats, .limitations { grid-template-columns: 1fr; }
+  .grid.cols-3, .grid.cols-4, .grid.cols-5 { grid-template-columns: repeat(2, 1fr); }
   .home-link { display: none; }
 }
