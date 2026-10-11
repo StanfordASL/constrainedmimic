@@ -281,6 +281,38 @@ code {
 }
 .figure-card img { width: 100%; height: auto; }
 
+/* Software cards: small logo tiles linking to the supporting libraries. */
+.software {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  max-width: 720px;
+  margin: 24px auto 32px;
+}
+.software-card {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 14px;
+  border-radius: 10px;
+  background: var(--surface);
+  box-shadow: 0 0 0 1px var(--line);
+  color: var(--fg);
+  text-decoration: none;
+  transition: box-shadow 0.15s;
+}
+.software-card:hover { box-shadow: 0 0 0 1px var(--accent); }
+.software-logo {
+  height: 72px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 8px;
+}
+.software-logo img { max-width: 80%; max-height: 100%; width: auto; height: auto; }
+.software-name { font: 500 14px var(--font-mono); }
+.software-desc { font-size: 13px; color: var(--muted); line-height: 1.4; }
+
 figcaption, .caption {
   margin-top: 10px;
   font-size: 13.5px;
@@ -454,4 +486,8 @@ pre code { padding: 0; background: none; font: inherit; }
   section { margin-top: 64px; }
   .grid.cols-3, .grid.cols-4, .grid.cols-5 { grid-template-columns: repeat(2, 1fr); }
   .home-link { display: none; }
+  .software { grid-template-columns: 1fr; gap: 10px; }
+  .software-card { display: grid; grid-template-columns: 96px 1fr; column-gap: 14px; align-items: center; }
+  .software-logo { grid-row: span 2; height: 48px; margin-bottom: 0; }
+  .software-logo img { max-width: 100%; }
 }

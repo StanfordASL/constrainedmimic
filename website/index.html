@@ -394,20 +394,29 @@
           Even with upwards of 300 constraints, our filters can be deployed at well over 1 kHz on desktop computers, and over 100 Hz on
           edge devices such as an Orin Nano. 
           <br><br>
-          All software is publicly available, and our deployment stack relies on our other libraries for fast robot kinematics and dynamics
-          (<a href="https://github.com/StanfordASL/frax">frax</a>), efficient automatic differentiation for CBF construction
-          (<a href="https://github.com/StanfordASL/cbfpy">CBFpy</a>), and fast, always-feasible quadratic programming
-          (<a href="https://github.com/StanfordASL/elastiqp">ElastiQP</a>).
+          All software is publicly available, and our deployment stack relies on our other open-source libraries:
         </p>
       </div>
 
-      <figure class="figure-card">
-        <img width="1953" height="429" loading="lazy" src="./static/images/timing.png" alt="Compute frequency vs number of CBF constraints for the kinematic filter, dynamic filter, and constrained retargeting, on desktop and Jetson Orin Nano.">
-      </figure>
-      <!-- <p class="caption">Compute frequency vs. number of CBF constraints. Left: Intel i9-14900KF. Right: Jetson Orin Nano.</p> -->
+      <div class="software">
+        <a class="software-card" href="https://github.com/StanfordASL/frax">
+          <div class="software-logo"><img width="250" height="109" loading="lazy" src="./static/images/logos/frax_logo_250px.png" alt="frax logo"></div>
+          <div class="software-name">frax</div>
+          <div class="software-desc">Fast robot kinematics and dynamics</div>
+        </a>
+        <a class="software-card" href="https://github.com/StanfordASL/cbfpy">
+          <div class="software-logo"><img width="250" height="324" loading="lazy" src="./static/images/logos/cbfpy_logo.png" alt="CBFpy logo"></div>
+          <div class="software-name">CBFpy</div>
+          <div class="software-desc">Efficient autodiff for CBF construction</div>
+        </a>
+        <a class="software-card" href="https://github.com/StanfordASL/elastiqp">
+          <div class="software-logo"><img width="300" height="55" loading="lazy" src="./static/images/logos/elastiqp_logo_300px.png" alt="ElastiQP logo"></div>
+          <div class="software-name">ElastiQP</div>
+          <div class="software-desc">Fast, always-feasible quadratic programming</div>
+        </a>
+      </div>
     </section>
 
-    <!-- ================= BibTeX ================= -->
     <section id="bibtex">
       <h2 class="eyebrow">BibTeX</h2>
       <pre><button class="copy" type="button">Copy</button><code>@article{morton2026constrained,
