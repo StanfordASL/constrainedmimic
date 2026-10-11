@@ -32,3 +32,8 @@ temp/
 
 # ROS2 bags
 bags/
+
+# non-website
+cm_control/
+cm_ws/
+docs/
