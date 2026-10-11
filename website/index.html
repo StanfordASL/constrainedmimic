@@ -286,10 +286,13 @@
       <div class="narrow">
         <h3 class="statement">Discrete kinematic modes impact the dynamic feasibility of single-step constraint enforcement</h3>
         <p class="lede">
-          Walking under a head-height obstacle, collision avoidance can be satisfied by bending backward
-          (&ldquo;limbo&rdquo;) or forward (&ldquo;crouch&rdquo;). Both are kinematically safe, but only one is dynamically
-          feasible. CBFs are a single-step method; choosing between modes requires longer-horizon reasoning &mdash;
-          provided by the human in teleoperation, and a target for future work in full autonomy.
+          CBFs are a single-step method of enforcing safety, and some constraints inherently require longer-horizon reasoning
+          over discrete actions or modes. 
+          <br><br>
+          Consider walking under an obstacle at head-height: if whole-body collision avoidance is enforced during the motion,
+          the resulting output is not necessarily dynamically-feasible, depending on the kinematic mode of the robot when
+          the constraint is active. A head-on approach leads to an unstable "limbo" motion, whereas approaching it from a
+          slight crouch can allow the robot to further duck under the obstacle, maintaining a stable posture throughout.
         </p>
       </div>
 
