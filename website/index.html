@@ -325,10 +325,13 @@
       <div class="narrow">
         <h3 class="statement">Certain constraints inherently require breaking the current contact mode to maintain safety</h3>
         <p class="lede">
-          A robot standing still cannot avoid an approaching obstacle without taking a step: with feet fixed, collision
-          is inevitable. We use a simple bilevel heuristic: a reduced-order planar CBF produces a safe velocity, a
-          lower-body planner turns this into a kinematic reference, and whole-body safety is enforced on the result,
-          tracked by SONIC.
+          Consider a humanoid standing at rest with a dynamic obstacle approaching. With the feet fixed in a double-support
+          contact mode, the robot cannot locomote, inevitably leading to a collision! In cases like this, breaking the current contact mode
+          is necessary to maintain safety.
+          <br><br>
+          To address this, we propose a simple bilevel heuristic: a reduced-order planar dynamics model runs in parallel to
+          a whole-body safety method, with a lower-body planner (e.g. from SONIC) generating the full kinematic reference
+          to track both the desired upper-body motion and the safe planar motion.
         </p>
       </div>
 
@@ -343,12 +346,16 @@
 
     <section id="hardware">
       <div class="narrow">
-        <h3 class="sub">On hardware, dynamics model mismatch makes both layers necessary</h3>
+        <h3 class="sub">On hardware, enforcing safety at both the kinematics and dynamics levels most reliably delivers a safe output, even under minor model mismatch.</h3>
         <p class="lede">
-          We recreate the karate chop on a Unitree G1 with TWIST2. In simulation, the dynamic filter alone was the most
-          minimally-conservative safe option; on hardware, unmodeled friction and inertial mismatch lead to small
-          violations when moving fast. Kinematics alone fails due to tracking error, dynamics alone fails due to imperfect
-          modeling &mdash; together, they complement each other.
+          On the Unitree G1 hardware, we recreate our "karate chop" experiment, seeking to understand how the results differ
+          during real hardware deployment. As in our simulation experiments, the kinematic filter alone leads to small constraint
+          violation, but under minor dynamics mismatch, the dynamic filter alone also leads to
+          minor violation (whereas in simulation, this was the least conservative approach that maintained safety).
+          <br><br>
+          In general, we find that kinematic and dynamic safety methods complement eachother for reliable constraint enforcement:
+          kinematics alone fails due to a lack of consideration of inertia and tracking error; dynamics alone fails due to imperfect
+          modeling and estimation at runtime; considering both effects together ultimately leads to safe behavior from the robot.
         </p>
       </div>
 
@@ -380,13 +387,17 @@
     </section>
 
 
-    <!-- ================= Key point 5: timing ================= -->
-    <section id="kp5">
+    <section id="timing">
       <div class="narrow">
         <h3 class="statement">All methods run well above policy frequency, even on edge devices and with hundreds of constraints</h3>
         <p class="lede">
-           <a href="https://github.com/StanfordASL/frax">frax</a> 
-          <a href="https://github.com/danielpmorton/cbfpy">CBFpy</a>
+          Even with upwards of 300 constraints, our filters can be deployed at well over 1 kHz on desktop computers, and over 100 Hz on
+          edge devices such as an Orin Nano. 
+          <br><br>
+          All software is publicly available, and our deployment stack relies on our other libraries for fast robot kinematics and dynamics
+          (<a href="https://github.com/StanfordASL/frax">frax</a>), efficient automatic differentiation for CBF construction
+          (<a href="https://github.com/StanfordASL/cbfpy">CBFpy</a>), and fast, always-feasible quadratic programming
+          (<a href="https://github.com/StanfordASL/elastiqp">ElastiQP</a>).
         </p>
       </div>
 
