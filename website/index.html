@@ -218,46 +218,6 @@
       </div>
     </section>
 
-      <!-- Hardware -->
-    <section id="hardware">
-      <div class="narrow">
-        <h3 class="sub">On hardware, dynamics model mismatch makes both layers necessary</h3>
-        <p class="lede">
-          We recreate the karate chop on a Unitree G1 with TWIST2. In simulation, the dynamic filter alone was the most
-          minimally-conservative safe option; on hardware, unmodeled friction and inertial mismatch lead to small
-          violations when moving fast. Kinematics alone fails due to tracking error, dynamics alone fails due to imperfect
-          modeling &mdash; together, they complement each other.
-        </p>
-      </div>
-
-      <div data-sync style="margin-top: 22px;">
-        <div class="grid cols-2">
-          <div class="clip">
-            <div class="clip-head">Nominal (no filter)</div>
-            <video width="960" height="540" poster="./static/videos/hardware/nominal.jpg" muted loop playsinline preload="metadata" src="./static/videos/hardware/nominal.mp4"></video>
-            <div class="clip-foot"><div class="outcome bad">Min h(z) = &minus;0.41</div></div>
-          </div>
-          <div class="clip">
-            <div class="clip-head">Kinematic only</div>
-            <video width="960" height="540" poster="./static/videos/hardware/kinematic.jpg" muted loop playsinline preload="metadata" src="./static/videos/hardware/kinematic.mp4"></video>
-            <div class="clip-foot"><div class="outcome bad">Min h(z) = &minus;0.14</div></div>
-          </div>
-          <div class="clip">
-            <div class="clip-head">Dynamic only</div>
-            <video width="960" height="540" poster="./static/videos/hardware/dynamic.jpg" muted loop playsinline preload="metadata" src="./static/videos/hardware/dynamic.mp4"></video>
-            <div class="clip-foot"><div class="outcome bad">Min h(z) = &minus;0.11</div></div>
-          </div>
-          <div class="clip">
-            <div class="clip-head">Kinematic + dynamic</div>
-            <video width="960" height="540" poster="./static/videos/hardware/kin_dyn.jpg" muted loop playsinline preload="metadata" src="./static/videos/hardware/kin_dyn.mp4"></video>
-            <div class="clip-foot"><div class="outcome good">Min h(z) = +0.02</div></div>
-          </div>
-        </div>
-        <!-- <button class="replay" type="button">↻ Replay in sync</button> -->
-      </div>
-
-    </section>
-
     <!-- ================= Key point 2: antigravity lean ================= -->
     <section id="kp2">
       <div class="narrow">
@@ -374,6 +334,45 @@
       </div>
       <!-- NOTE: this video was extracted from the supplemental slides (no source file in dan_vids). Replace with the original if available. -->
     </section>
+
+    <section id="hardware">
+      <div class="narrow">
+        <h3 class="sub">On hardware, dynamics model mismatch makes both layers necessary</h3>
+        <p class="lede">
+          We recreate the karate chop on a Unitree G1 with TWIST2. In simulation, the dynamic filter alone was the most
+          minimally-conservative safe option; on hardware, unmodeled friction and inertial mismatch lead to small
+          violations when moving fast. Kinematics alone fails due to tracking error, dynamics alone fails due to imperfect
+          modeling &mdash; together, they complement each other.
+        </p>
+      </div>
+
+      <div data-sync style="margin-top: 22px;">
+        <div class="grid cols-2">
+          <div class="clip">
+            <div class="clip-head">Nominal (no filter)</div>
+            <video width="960" height="540" poster="./static/videos/hardware/nominal.jpg" muted loop playsinline preload="metadata" src="./static/videos/hardware/nominal.mp4"></video>
+            <div class="clip-foot"><div class="outcome bad">Min h(z) = &minus;0.41</div></div>
+          </div>
+          <div class="clip">
+            <div class="clip-head">Kinematic only</div>
+            <video width="960" height="540" poster="./static/videos/hardware/kinematic.jpg" muted loop playsinline preload="metadata" src="./static/videos/hardware/kinematic.mp4"></video>
+            <div class="clip-foot"><div class="outcome bad">Min h(z) = &minus;0.14</div></div>
+          </div>
+          <div class="clip">
+            <div class="clip-head">Dynamic only</div>
+            <video width="960" height="540" poster="./static/videos/hardware/dynamic.jpg" muted loop playsinline preload="metadata" src="./static/videos/hardware/dynamic.mp4"></video>
+            <div class="clip-foot"><div class="outcome bad">Min h(z) = &minus;0.11</div></div>
+          </div>
+          <div class="clip">
+            <div class="clip-head">Kinematic + dynamic</div>
+            <video width="960" height="540" poster="./static/videos/hardware/kin_dyn.jpg" muted loop playsinline preload="metadata" src="./static/videos/hardware/kin_dyn.mp4"></video>
+            <div class="clip-foot"><div class="outcome good">Min h(z) = +0.02</div></div>
+          </div>
+        </div>
+        <!-- <button class="replay" type="button">↻ Replay in sync</button> -->
+      </div>
+    </section>
+
 
     <!-- ================= Key point 5: timing ================= -->
     <section id="kp5">
