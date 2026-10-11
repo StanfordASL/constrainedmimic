@@ -221,13 +221,16 @@
     <!-- ================= Key point 2: antigravity lean ================= -->
     <section id="kp2">
       <div class="narrow">
-        <h3 class="statement">Safety filters for humanoids must account for the contact-constrained kinematics and dynamics</h3>
+        <h3 class="statement">Safety filters for humanoid whole-body control must account for the contact-constrained kinematics and dynamics</h3>
         <p class="lede">
-          Michael Jackson's <em>antigravity lean</em> is impossible without specialized shoes: the center of mass leaves
-          the support polygon. Building up a contact-constrained kinematic safety filter (CoM stability + joint limit CBFs) shows why
-          each piece is needed: without contact constraints the feet leave the ground (B), a CBF on the unconstrained
-          model is violated once contact is enforced (C), and without a task-consistent objective the filter induces
-          undue motion at the boundary of safety (D).
+          For safety filters to work properly, they must have an accurate model of the kinematics (for first-order, input-level
+          filters) and dynamics (for second-order, output-level filters). Naively enforcing safety without considering the
+          contact state, though, will result in a mismatch that leads to unsafe and unexpected behavior.
+          <br><br>
+          Consider an <a href="https://www.youtube.com/watch?v=h_D3VFfhvs4&t=422s">antigravity lean</a>, which violates a center
+          of mass stability constraint. Unless we account for both the contact-constrained kinematics and a task-consistent
+          objective for this motion (E), we either get physically-implausible, unsafe, or undesired motions from the filtered
+          output (A-D).
         </p>
       </div>
 
@@ -242,7 +245,7 @@
             </div>
           </div>
           <div class="clip">
-            <div class="clip-head"><span class="letter">B</span>Add CBF constraints</div>
+            <div class="clip-head"><span class="letter">B</span>+ CBF constraints</div>
             <video width="600" height="600" poster="./static/videos/smooth_criminal/smooth_criminal_cbf_B.jpg" muted loop playsinline preload="metadata" src="./static/videos/smooth_criminal/smooth_criminal_cbf_B.mp4"></video>
             <div class="clip-foot">
               <!-- <div class="chips"><span class="chip">Dyn <b>off</b></span><span class="chip">Safety <b>kin</b></span></div> -->
@@ -250,7 +253,7 @@
             </div>
           </div>
           <div class="clip">
-            <div class="clip-head"><span class="letter">C</span>Integrate with constrained kinematics</div>
+            <div class="clip-head"><span class="letter">C</span>+ Constrained kinematic integration</div>
             <video width="600" height="600" poster="./static/videos/smooth_criminal/smooth_criminal_cbf_C.jpg" muted loop playsinline preload="metadata" src="./static/videos/smooth_criminal/smooth_criminal_cbf_C.mp4"></video>
             <div class="clip-foot">
               <!-- <div class="chips"><span class="chip">Dyn <b>off</b></span><span class="chip">Safety <b>kin</b></span></div> -->
@@ -258,7 +261,7 @@
             </div>
           </div>
           <div class="clip">
-            <div class="clip-head"><span class="letter">D</span>Constrained kinematics in the CBF</div>
+            <div class="clip-head"><span class="letter">D</span>+ Constrained kinematics in the CBF</div>
             <video width="600" height="600" poster="./static/videos/smooth_criminal/smooth_criminal_cbf_D.jpg" muted loop playsinline preload="metadata" src="./static/videos/smooth_criminal/smooth_criminal_cbf_D.mp4"></video>
             <div class="clip-foot">
               <!-- <div class="chips"><span class="chip">Dyn <b>off</b></span><span class="chip">Safety <b>kin</b></span></div> -->
@@ -266,7 +269,7 @@
             </div>
           </div>
           <div class="clip">
-            <div class="clip-head"><span class="letter">E</span>Task-consistent objective</div>
+            <div class="clip-head"><span class="letter">E</span>+ Task-consistent objective</div>
             <video width="600" height="600" poster="./static/videos/smooth_criminal/smooth_criminal_cbf_E.jpg" muted loop playsinline preload="metadata" src="./static/videos/smooth_criminal/smooth_criminal_cbf_E.mp4"></video>
             <div class="clip-foot">
               <!-- <div class="chips"><span class="chip">Dyn <b>off</b></span><span class="chip">Safety <b>kin</b></span></div> -->
