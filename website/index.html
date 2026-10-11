@@ -99,7 +99,7 @@
     </section>
 
     <!-- ================= Key point 1: karate chop ================= -->
-    <section id="kp1">
+    <section id="karate">
       <h2 class="eyebrow">Overview</h2>
       <div class="narrow">
         <h3 class="statement">Purely kinematic notions of safety are insufficient for policies with tracking error</h3>
@@ -169,10 +169,12 @@
         </div>
         <!-- <button class="replay" type="button" style="grid-column: 1 / -1;">↻ Replay in sync</button> -->
       </div>
+    </section>
 
       <!-- Self-collision -->
+    <section id="self-collision">
       <div class="narrow">
-        <h3 class="statement">A safety filter is necessary even for conditions known at training time</h3>
+        <h3 class="statement">A safety filter is beneficial even for conditions known at training time</h3>
         <p class="lede">
           While a key benefit of an online safety filter is the ability to enforce runtime-specified constraints
           that were unknown at training time, these filters are still useful for conditions that are known at
@@ -214,8 +216,10 @@
         <!-- <button class="replay" type="button">↻ Replay in sync</button> -->
         <!-- More variants (kinematics_cbf, dynamics_kin_cbf, dynamics_dyn_cbf) are in untracked/dan_vids/sc/square. -->
       </div>
+    </section>
 
       <!-- Hardware -->
+    <section id="hardware">
       <div class="narrow">
         <h3 class="sub">On hardware, dynamics model mismatch makes both layers necessary</h3>
         <p class="lede">
@@ -257,7 +261,7 @@
     <!-- ================= Key point 2: antigravity lean ================= -->
     <section id="kp2">
       <div class="narrow">
-        <h2 class="statement">Safety filters for humanoids must account for the contact-constrained kinematics and dynamics</h2>
+        <h3 class="statement">Safety filters for humanoids must account for the contact-constrained kinematics and dynamics</h3>
         <p class="lede">
           Michael Jackson's <em>antigravity lean</em> is impossible without specialized shoes: the center of mass leaves
           the support polygon. Building up a contact-constrained kinematic safety filter (CoM stability + joint limit CBFs) shows why
@@ -317,7 +321,7 @@
     <!-- ================= Key point 3: limbo vs crouch ================= -->
     <section id="kp3">
       <div class="narrow">
-        <h2 class="statement">Discrete kinematic modes impact the dynamic feasibility of single-step constraint enforcement</h2>
+        <h3 class="statement">Discrete kinematic modes impact the dynamic feasibility of single-step constraint enforcement</h3>
         <p class="lede">
           Walking under a head-height obstacle, collision avoidance can be satisfied by bending backward
           (&ldquo;limbo&rdquo;) or forward (&ldquo;crouch&rdquo;). Both are kinematically safe, but only one is dynamically
@@ -353,7 +357,7 @@
     <!-- ================= Key point 4: breaking contact ================= -->
     <section id="kp4">
       <div class="narrow">
-        <h2 class="statement">Certain constraints inherently require breaking the current contact mode to maintain safety</h2>
+        <h3 class="statement">Certain constraints inherently require breaking the current contact mode to maintain safety</h3>
         <p class="lede">
           A robot standing still cannot avoid an approaching obstacle without taking a step: with feet fixed, collision
           is inevitable. We use a simple bilevel heuristic: a reduced-order planar CBF produces a safe velocity, a
@@ -374,7 +378,7 @@
     <!-- ================= Key point 5: timing ================= -->
     <section id="kp5">
       <div class="narrow">
-        <h2 class="statement">All methods run well above policy frequency, even on edge devices and with hundreds of constraints</h2>
+        <h3 class="statement">All methods run well above policy frequency, even on edge devices and with hundreds of constraints</h3>
         <p class="lede">
            <a href="https://github.com/StanfordASL/frax">frax</a> 
           <a href="https://github.com/danielpmorton/cbfpy">CBFpy</a>
