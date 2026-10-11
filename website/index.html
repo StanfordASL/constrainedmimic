@@ -102,12 +102,17 @@
     <section id="kp1">
       <h2 class="eyebrow">Overview</h2>
       <div class="narrow">
-        <h2 class="statement">Purely kinematic notions of safety are insufficient for policies with tracking error</h2>
+        <h3 class="statement">Purely kinematic notions of safety are insufficient for policies with tracking error</h3>
         <p class="lede">
-          A &ldquo;karate chop&rdquo; toward a table, with a hand&ndash;table collision constraint that could
-          <em>not</em> have been known at training time. Constrained retargeting produces a safe reference (B), but the
-          policy overshoots it (C). A dynamic filter on the policy output maintains safety (D), and combining kinematic
-          and dynamic safety is collision-free, though more conservative (E).
+          Given an unsafe input to a whole-body tracking policy (a kinematic reference), safety constraints can be applied
+          at this level either via a kinematic filter, or via constrained retargeting. While this filtered reference may
+          satisfy constraints, deploying it on the robot does not necessarily lead to safe behavior, due to not accounting
+          for inertial effects, overshoot, and general tracking errors of the underlying policy.
+          <br><br>
+          Here, we demonstrate a "karate chop" motion where we enforce a constraint between the hand and a planar surface.
+          Although kinematic safety methods can constrain an unsafe behavior (A) and produce a safe reference (B), tracking
+          this with a general motion tracker (C) leads to overshoot and constraint violation. Accounting for dynamics (D/E)
+          maintains safety, whether the original input was safe or not.
         </p>
       </div>
 
@@ -119,7 +124,7 @@
               <div class="clip-head"><span class="letter">A</span>Original unsafe reference</div>
               <video width="600" height="600" poster="./static/videos/karate/karate_chop_kinematics.jpg" muted loop playsinline preload="metadata" src="./static/videos/karate/karate_chop_kinematics.mp4"></video>
               <div class="clip-foot">
-                <div class="chips"><span class="chip">Dyn <b>off</b></span><span class="chip">Safety <b>off</b></span></div>
+                <!-- <div class="chips"><span class="chip">Dyn <b>off</b></span><span class="chip">Safety <b>off</b></span></div> -->
                 <div class="outcome bad">Hand/table collision</div>
               </div>
             </div>
@@ -127,7 +132,7 @@
               <div class="clip-head"><span class="letter">B</span>Constrained retargeting</div>
               <video width="600" height="600" poster="./static/videos/karate/karate_chop_kinematics_cbf.jpg" muted loop playsinline preload="metadata" src="./static/videos/karate/karate_chop_kinematics_cbf.mp4"></video>
               <div class="clip-foot">
-                <div class="chips"><span class="chip">Dyn <b>off</b></span><span class="chip">Safety <b>kin</b></span></div>
+                <!-- <div class="chips"><span class="chip">Dyn <b>off</b></span><span class="chip">Safety <b>kin</b></span></div> -->
                 <div class="outcome good">Collision-free reference</div>
               </div>
             </div>
@@ -140,7 +145,7 @@
               <div class="clip-head"><span class="letter">C</span>Policy tracks safe reference</div>
               <video width="600" height="600" poster="./static/videos/karate/karate_chop_dynamics_kin_cbf.jpg" muted loop playsinline preload="metadata" src="./static/videos/karate/karate_chop_dynamics_kin_cbf.mp4"></video>
               <div class="clip-foot">
-                <div class="chips"><span class="chip">Dyn <b>on</b></span><span class="chip">Safety <b>kin</b></span></div>
+                <!-- <div class="chips"><span class="chip">Dyn <b>on</b></span><span class="chip">Safety <b>kin</b></span></div> -->
                 <div class="outcome bad">Overshoot &rarr; collision</div>
               </div>
             </div>
@@ -148,7 +153,7 @@
               <div class="clip-head"><span class="letter">D</span>Dynamic filter on unsafe reference</div>
               <video width="600" height="600" poster="./static/videos/karate/karate_chop_dynamics_dyn_cbf.jpg" muted loop playsinline preload="metadata" src="./static/videos/karate/karate_chop_dynamics_dyn_cbf.mp4"></video>
               <div class="clip-foot">
-                <div class="chips"><span class="chip">Dyn <b>on</b></span><span class="chip">Safety <b>dyn</b></span></div>
+                <!-- <div class="chips"><span class="chip">Dyn <b>on</b></span><span class="chip">Safety <b>dyn</b></span></div> -->
                 <div class="outcome good">Collision-free</div>
               </div>
             </div>
@@ -156,22 +161,27 @@
               <div class="clip-head"><span class="letter">E</span>Kinematic + dynamic safety</div>
               <video width="600" height="600" poster="./static/videos/karate/karate_chop_dynamics_both_cbf.jpg" muted loop playsinline preload="metadata" src="./static/videos/karate/karate_chop_dynamics_both_cbf.mp4"></video>
               <div class="clip-foot">
-                <div class="chips"><span class="chip">Dyn <b>on</b></span><span class="chip">Safety <b>kin/dyn</b></span></div>
+                <!-- <div class="chips"><span class="chip">Dyn <b>on</b></span><span class="chip">Safety <b>kin/dyn</b></span></div> -->
                 <div class="outcome good">Collision-free, more conservative</div>
               </div>
             </div>
           </div>
         </div>
-        <button class="replay" type="button" style="grid-column: 1 / -1;">↻ Replay in sync</button>
+        <!-- <button class="replay" type="button" style="grid-column: 1 / -1;">↻ Replay in sync</button> -->
       </div>
 
       <!-- Self-collision -->
       <div class="narrow">
-        <h3 class="sub">The same holds for constraints known at training time</h3>
+        <h3 class="statement">A safety filter is necessary even for conditions known at training time</h3>
         <p class="lede">
-          Self-collision is typically part of the training reward, yet tracking an &ldquo;arm-crossing&rdquo;
-          teleoperation reference with TWIST2 immediately leads to collision between the arms. Even constraints known
-          <em>a priori</em> benefit from explicit safety filtering at deployment time.
+          While a key benefit of an online safety filter is the ability to enforce runtime-specified constraints
+          that were unknown at training time, these filters are still useful for conditions that are known at
+          training time.
+          <br><br>
+          Consider self-collision avoidance: the full model of the robot kinematics and link geometry is known
+          during training, and often, self-collisions are heavily penalized in the reward function. Still, the
+          tracking policy provides no guarantee that this constraint is implicitly represented, and tracking an
+          unsafe reference (A) can still lead to collisions (B) without a filter (C).
         </p>
       </div>
 
@@ -181,14 +191,14 @@
             <div class="clip-head">Original reference</div>
             <video width="720" height="720" poster="./static/videos/self_collision/self_collision_kinematics.jpg" muted loop playsinline preload="metadata" src="./static/videos/self_collision/self_collision_kinematics.mp4"></video>
             <div class="clip-foot">
-              <div class="chips"><span class="chip">Dyn <b>off</b></span><span class="chip">Safety <b>off</b></span></div>
+              <!-- <div class="chips"><span class="chip">Dyn <b>off</b></span><span class="chip">Safety <b>off</b></span></div> -->
             </div>
           </div>
           <div class="clip">
             <div class="clip-head">Policy + original reference</div>
             <video width="720" height="720" poster="./static/videos/self_collision/self_collision_dynamics.jpg" muted loop playsinline preload="metadata" src="./static/videos/self_collision/self_collision_dynamics.mp4"></video>
             <div class="clip-foot">
-              <div class="chips"><span class="chip">Dyn <b>on</b></span><span class="chip">Safety <b>off</b></span></div>
+              <!-- <div class="chips"><span class="chip">Dyn <b>on</b></span><span class="chip">Safety <b>off</b></span></div> -->
               <div class="outcome bad">Self-collision</div>
             </div>
           </div>
@@ -196,24 +206,13 @@
             <div class="clip-head">Policy + constrained retargeting + dynamic filter</div>
             <video width="720" height="720" poster="./static/videos/self_collision/self_collision_dynamics_both_cbf.jpg" muted loop playsinline preload="metadata" src="./static/videos/self_collision/self_collision_dynamics_both_cbf.mp4"></video>
             <div class="clip-foot">
-              <div class="chips"><span class="chip">Dyn <b>on</b></span><span class="chip">Safety <b>kin/dyn</b></span></div>
+              <!-- <div class="chips"><span class="chip">Dyn <b>on</b></span><span class="chip">Safety <b>kin/dyn</b></span></div> -->
               <div class="outcome good">Collision-free</div>
             </div>
           </div>
         </div>
-        <button class="replay" type="button">↻ Replay in sync</button>
+        <!-- <button class="replay" type="button">↻ Replay in sync</button> -->
         <!-- More variants (kinematics_cbf, dynamics_kin_cbf, dynamics_dyn_cbf) are in untracked/dan_vids/sc/square. -->
-      </div>
-
-      <!-- Quantitative results -->
-      <div class="narrow">
-        <h3 class="sub">Across 100 randomized trials, both layers together are most reliable</h3>
-        <p class="lede">
-          We vary the constraint parameters (e.g. table height) and the reference playback speed (0.5&times;&ndash;2.0&times;).
-          The base policy is unsafe even for constraints known at training time; kinematic safety reduces violation but
-          suffers from overshoot; dynamic safety operates at the lowest level and reduces violation further; and enabling
-          both is the most reliably safe.
-        </p>
       </div>
 
       <!-- Hardware -->
@@ -250,7 +249,7 @@
             <div class="clip-foot"><div class="outcome good">Min h(z) = +0.02</div></div>
           </div>
         </div>
-        <button class="replay" type="button">↻ Replay in sync</button>
+        <!-- <button class="replay" type="button">↻ Replay in sync</button> -->
       </div>
 
     </section>
@@ -274,7 +273,7 @@
             <div class="clip-head"><span class="letter">A</span>Desired robot motion</div>
             <video width="600" height="600" poster="./static/videos/smooth_criminal/smooth_criminal_A.jpg" muted loop playsinline preload="metadata" src="./static/videos/smooth_criminal/smooth_criminal_A.mp4"></video>
             <div class="clip-foot">
-              <div class="chips"><span class="chip">Dyn <b>off</b></span><span class="chip">Safety <b>off</b></span></div>
+              <!-- <div class="chips"><span class="chip">Dyn <b>off</b></span><span class="chip">Safety <b>off</b></span></div> -->
               <div class="outcome bad">Unstable reference</div>
             </div>
           </div>
@@ -282,7 +281,7 @@
             <div class="clip-head"><span class="letter">B</span>Add CBF constraints</div>
             <video width="600" height="600" poster="./static/videos/smooth_criminal/smooth_criminal_cbf_B.jpg" muted loop playsinline preload="metadata" src="./static/videos/smooth_criminal/smooth_criminal_cbf_B.mp4"></video>
             <div class="clip-foot">
-              <div class="chips"><span class="chip">Dyn <b>off</b></span><span class="chip">Safety <b>kin</b></span></div>
+              <!-- <div class="chips"><span class="chip">Dyn <b>off</b></span><span class="chip">Safety <b>kin</b></span></div> -->
               <div class="outcome bad">Contact violation</div>
             </div>
           </div>
@@ -290,7 +289,7 @@
             <div class="clip-head"><span class="letter">C</span>Integrate with constrained kinematics</div>
             <video width="600" height="600" poster="./static/videos/smooth_criminal/smooth_criminal_cbf_C.jpg" muted loop playsinline preload="metadata" src="./static/videos/smooth_criminal/smooth_criminal_cbf_C.mp4"></video>
             <div class="clip-foot">
-              <div class="chips"><span class="chip">Dyn <b>off</b></span><span class="chip">Safety <b>kin</b></span></div>
+              <!-- <div class="chips"><span class="chip">Dyn <b>off</b></span><span class="chip">Safety <b>kin</b></span></div> -->
               <div class="outcome bad">Joint limit violation</div>
             </div>
           </div>
@@ -298,7 +297,7 @@
             <div class="clip-head"><span class="letter">D</span>Constrained kinematics in the CBF</div>
             <video width="600" height="600" poster="./static/videos/smooth_criminal/smooth_criminal_cbf_D.jpg" muted loop playsinline preload="metadata" src="./static/videos/smooth_criminal/smooth_criminal_cbf_D.mp4"></video>
             <div class="clip-foot">
-              <div class="chips"><span class="chip">Dyn <b>off</b></span><span class="chip">Safety <b>kin</b></span></div>
+              <!-- <div class="chips"><span class="chip">Dyn <b>off</b></span><span class="chip">Safety <b>kin</b></span></div> -->
               <div class="outcome bad">Task-inconsistent motion</div>
             </div>
           </div>
@@ -306,12 +305,12 @@
             <div class="clip-head"><span class="letter">E</span>Task-consistent objective</div>
             <video width="600" height="600" poster="./static/videos/smooth_criminal/smooth_criminal_cbf_E.jpg" muted loop playsinline preload="metadata" src="./static/videos/smooth_criminal/smooth_criminal_cbf_E.mp4"></video>
             <div class="clip-foot">
-              <div class="chips"><span class="chip">Dyn <b>off</b></span><span class="chip">Safety <b>kin</b></span></div>
+              <!-- <div class="chips"><span class="chip">Dyn <b>off</b></span><span class="chip">Safety <b>kin</b></span></div> -->
               <div class="outcome good">Safe output</div>
             </div>
           </div>
         </div>
-        <button class="replay" type="button">↻ Replay in sync</button>
+        <!-- <button class="replay" type="button">↻ Replay in sync</button> -->
       </div>
     </section>
 
@@ -333,7 +332,7 @@
             <div class="clip-head">&ldquo;Limbo&rdquo;</div>
             <video width="1000" height="600" poster="./static/videos/limbo/limbo_limbo_kinematics_cbf.jpg" muted loop playsinline preload="metadata" src="./static/videos/limbo/limbo_limbo_kinematics_cbf.mp4"></video>
             <div class="clip-foot">
-              <div class="chips"><span class="chip">Dyn <b>off</b></span><span class="chip">Safety <b>kin</b></span></div>
+              <!-- <div class="chips"><span class="chip">Dyn <b>off</b></span><span class="chip">Safety <b>kin</b></span></div> -->
               <div class="outcome bad">Dynamically infeasible</div>
             </div>
           </div>
@@ -341,7 +340,7 @@
             <div class="clip-head">&ldquo;Crouch&rdquo;</div>
             <video width="1000" height="600" poster="./static/videos/limbo/limbo_crouch_kinematics_cbf.jpg" muted loop playsinline preload="metadata" src="./static/videos/limbo/limbo_crouch_kinematics_cbf.mp4"></video>
             <div class="clip-foot">
-              <div class="chips"><span class="chip">Dyn <b>off</b></span><span class="chip">Safety <b>kin</b></span></div>
+              <!-- <div class="chips"><span class="chip">Dyn <b>off</b></span><span class="chip">Safety <b>kin</b></span></div> -->
               <div class="outcome good">Dynamically feasible</div>
             </div>
           </div>
@@ -366,7 +365,7 @@
       <div class="clip narrow" style="max-width: 640px;">
         <video width="1008" height="648" poster="./static/videos/breaking_contact/breaking_contact.jpg" muted loop playsinline preload="metadata" src="./static/videos/breaking_contact/breaking_contact.mp4"></video>
         <div class="clip-foot" style="align-items: center;">
-          <div class="chips"><span class="chip">Dyn <b>on</b></span><span class="chip">Safety <b>kin</b></span></div>
+          <!-- <div class="chips"><span class="chip">Dyn <b>on</b></span><span class="chip">Safety <b>kin</b></span></div> -->
         </div>
       </div>
       <!-- NOTE: this video was extracted from the supplemental slides (no source file in dan_vids). Replace with the original if available. -->
@@ -377,17 +376,15 @@
       <div class="narrow">
         <h2 class="statement">All methods run well above policy frequency, even on edge devices and with hundreds of constraints</h2>
         <p class="lede">
-          Higher rates mean tighter feedback loops, control over faster dynamics, and room for more constraints in a fixed
-          compute budget. Built on JAX with <a href="https://github.com/StanfordASL/frax">frax</a> and
-          <a href="https://github.com/danielpmorton/cbfpy">CBFpy</a>, the dynamic filter can run faster than the policy
-          itself (250&nbsp;Hz, 5&times; policy rate, in our experiments).
+           <a href="https://github.com/StanfordASL/frax">frax</a> 
+          <a href="https://github.com/danielpmorton/cbfpy">CBFpy</a>
         </p>
       </div>
 
       <figure class="figure-card">
         <img width="1953" height="429" loading="lazy" src="./static/images/timing.png" alt="Compute frequency vs number of CBF constraints for the kinematic filter, dynamic filter, and constrained retargeting, on desktop and Jetson Orin Nano.">
       </figure>
-      <p class="caption">Compute frequency vs. number of CBF constraints. Left: Intel i9-14900KF. Right: Jetson Orin Nano.</p>
+      <!-- <p class="caption">Compute frequency vs. number of CBF constraints. Left: Intel i9-14900KF. Right: Jetson Orin Nano.</p> -->
     </section>
 
     <!-- ================= BibTeX ================= -->
