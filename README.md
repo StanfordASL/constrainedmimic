@@ -62,9 +62,9 @@ Note that I used version `3.4.0` and decided to install to `/opt/mujoco` -- you 
 
 ### Pico VR
 
-Download the release deb from [this link](https://github.com/XR-Robotics/XRoboToolkit-PC-Service/releases) according to your ubuntu version (for instance, `XRoboToolkit_PC_Service_1.0.0_ubuntu_24.04_amd64.deb` for Ubuntu 24.04). Then, install with `sudo dpkg -i XRoboToolkit_PC_Service_1.0.0_ubuntu_24.04_amd64.deb`
+Generally, it's easiest to use the Pico headset over wifi. NVIDIA already has a useful guide on the SONIC documentation on how to get this set up: see [this link](https://nvlabs.github.io/GR00T-WholeBodyControl/getting_started/vr_teleop_setup.html) for more details. 
 
-#### Usage
+But, if you would like to use the Pico headset plugged-in and communicating over a wired connection (for lower latency), see the following:
 
 In a fresh terminal, run `adb devices` to see if the device is connected. Then, set up reverse port forwarding:
 ```
