@@ -38,7 +38,7 @@ from cm_control.utils.osc_utils import (
 
 """
 Simple Kinematics
-z = q_dot
+z = q
 u = q_dot
 z_dot = q_dot
 """
@@ -54,7 +54,7 @@ def g_kin_simple(robot: Humanoid, z: Array) -> Array:
 
 """
 Constrained Kinematics
-z = q_dot
+z = q
 u = q_dot
 z_dot = Nc q_dot
 where Nc is the contact null space projection matrix
@@ -82,7 +82,7 @@ def g_kin_constrained(robot: Humanoid, z: Array, contact_mode: int) -> Array:
 
 """
 Constrained, Underactuated Kinematics
-z = q_dot
+z = q
 u = q_dot_actuated
 z_dot = (SNC)_bar q_dot_actuated
 where Nc is the contact null space projection matrix, 
