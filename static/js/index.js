@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', function () {
-  // Light/dark toggle. With no saved choice, the page follows the OS setting.
+  // Light/dark toggle. With no saved choice, the page defaults to light.
   var root = document.documentElement;
   var toggle = document.getElementById('theme-toggle');
   var prefersDark = window.matchMedia('(prefers-color-scheme: dark)');
