@@ -31,6 +31,7 @@ from cm_control.core.control_affine import (
     f_dyn_constrained_underactuated,
     g_dyn_constrained_underactuated,
 )
+from cm_control.utils.osc_utils import selection_matrix, contact_mask_from_mode
 
 jax.config.update("jax_platforms", "cpu")
 jax.config.update("jax_enable_x64", True)
@@ -296,6 +297,71 @@ class TestKinematicsAndDynamics(unittest.TestCase):
         batch_time = time.perf_counter() - start_time_batch
         avg_time = batch_time / (self.num_timing_tests * len(contact_modes))
         print("Average time (ms): ", avg_time * 1e3)
+
+    def test_constrained_dynamics_satisfy_contact_constraint(self):
+        """Check J_c @ qdd + J_c_dot @ qd = 0"""
+        robot = self.robot
+        n = robot.num_joints
+        rng = np.random.default_rng(0)
+        q = rng.uniform(-0.5, 0.5, n)
+        qd = rng.uniform(-1.0, 1.0, n)
+        tau = rng.uniform(-10.0, 10.0, n)
+        z = np.concatenate([q, qd])
+
+        transforms = robot.joint_to_world_transforms(q)
+        J_L, J_L_dot = robot._left_foot_jacobian_and_derivative(qd, transforms)
+        J_R, J_R_dot = robot._right_foot_jacobian_and_derivative(qd, transforms)
+        J_c = np.vstack([J_L, J_R])
+        J_c_dot = np.vstack([J_L_dot, J_R_dot])
+        M = np.asarray(robot._mass_matrix(transforms))
+        bias = np.asarray(robot._nonlinear_bias(qd, transforms))
+
+        S = np.asarray(selection_matrix(robot.num_actuated_joints))
+        tau_actuated = S @ tau
+
+        for contact_mode in (0, 1, 2, 3):
+            mask = np.asarray(contact_mask_from_mode(contact_mode)).astype(bool)
+            J_a = J_c[mask]
+            J_a_dot = J_c_dot[mask]
+            m = J_a.shape[0]
+
+            # Ground truth: KKT solve of
+            #   M qdd - J_a.T lam = tau - bias
+            #   J_a qdd = -J_a_dot qd
+            def kkt_qdd(generalized_force):
+                K = np.block([[M, -J_a.T], [J_a, np.zeros((m, m))]])
+                rhs = np.concatenate([generalized_force - bias, -J_a_dot @ qd])
+                return np.linalg.solve(K, rhs)[:n]
+
+            # Fully actuated
+            qdd = np.asarray(constrained_dynamics(robot, z, tau, contact_mode, True))[
+                n:
+            ]
+            residual = J_a @ qdd + J_a_dot @ qd
+            np.testing.assert_allclose(
+                residual,
+                0.0,
+                atol=1e-8,
+                err_msg=f"J_c qdd + J_c_dot qd != 0 (contact mode {contact_mode})",
+            )
+            np.testing.assert_allclose(qdd, kkt_qdd(tau), rtol=1e-8, atol=1e-8)
+
+            # Underactuated
+            qdd_u = np.asarray(
+                constrained_underactuated_dynamics(
+                    robot, z, tau_actuated, contact_mode, True
+                )
+            )[n:]
+            residual_u = J_a @ qdd_u + J_a_dot @ qd
+            np.testing.assert_allclose(
+                residual_u,
+                0.0,
+                atol=1e-8,
+                err_msg=f"J_c qdd + J_c_dot qd != 0 (underactuated, contact mode {contact_mode})",
+            )
+            np.testing.assert_allclose(
+                qdd_u, kkt_qdd(S.T @ tau_actuated), rtol=1e-8, atol=1e-8
+            )
 
 
 if __name__ == "__main__":

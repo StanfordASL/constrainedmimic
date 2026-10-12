@@ -160,7 +160,7 @@ def g_dyn_simple(robot: Humanoid, z: Array) -> Array:
 Constrained dynamics
 z = [q, qdot]
 u = [tau]
-z_dot = [qdot, Minv @ (Nc.T @ tau - N_c.T @ bias - J_c.T @ mu_c_jdot)]
+z_dot = [qdot, Minv @ (Nc.T @ tau - N_c.T @ bias + J_c.T @ mu_c_jdot)]
 
 Note that in the expression for z_dot, the contact terms only show up in
 the qdd component, since the resultant integrated velocity should still
@@ -192,7 +192,7 @@ def f_dyn_constrained(
     M = robot._mass_matrix(joint_transforms)
     M_inv = robot.mass_matrix_inverse(M)
 
-    # f = [qdot, M_inv @ (-N_c.T @ bias - J_c.T @ mu_c_jdot)]
+    # f = [qdot, M_inv @ (-N_c.T @ bias + J_c.T @ mu_c_jdot)]
     # With no contact, N_c = identity and mu_c_jdot = 0, reducing to
     # the simple dynamics [qdot, -M_inv @ bias]
     mask = contact_mask_from_mode(contact_mode)
@@ -204,7 +204,7 @@ def f_dyn_constrained(
     else:
         mu_c_jdot = jnp.zeros(J_c.shape[0])
     J_c_masked = mask[:, None] * J_c
-    return jnp.concatenate([qd, M_inv @ (-N_c.T @ bias - J_c_masked.T @ mu_c_jdot)])
+    return jnp.concatenate([qd, M_inv @ (-N_c.T @ bias + J_c_masked.T @ mu_c_jdot)])
 
 
 def g_dyn_constrained(
@@ -233,7 +233,7 @@ def g_dyn_constrained(
 Constrained, underactuated dynamics
 z = [q, qdot]
 u = [tau_actuated]
-z_dot = [qdot, Minv @ (Nc.T @ S.T @ tau - N_c.T @ bias - J_c.T @ mu_c_jdot)]
+z_dot = [qdot, Minv @ (Nc.T @ S.T @ tau - N_c.T @ bias + J_c.T @ mu_c_jdot)]
 
 This is VERY similar to the constrained, fully-actuated case except now in
 the g function, we have a component depending on S
