@@ -85,15 +85,14 @@
         <p class="lede">
           Recent advances in reinforcement learning (RL) have demonstrated impressive whole-body agility for humanoid
           robots, yet ensuring safety and satisfying constraints &ndash; particularly those specified after training
-          &ndash; remains a challenge. Towards this goal, we present ConstrainedMimic, a control framework that leverages
-          whole-body kinematics and dynamics for real-time constraint enforcement within RL tracking policies. By
-          integrating principles from operational space control and control barrier functions (CBFs), we enable the
-          satisfaction of arbitrary runtime constraints on both the kinematic reference motion and the underlying
-          dynamics. In whole-body motion-tracking and teleoperation experiments on a Unitree G1 with a
-          learned policy, we demonstrate collision avoidance (both with the robot body and external obstacles), joint
-          limits, and center of mass stability constraints. By remaining consistent with the current contact mode and
-          tracking objectives, we minimally restrict the capabilities of the policy when constraints are active. Our
-          method is fully differentiable, runs on CPU, GPU, and TPU, and can be deployed at kilohertz control rates.
+          &ndash; remains a challenge. Towards this goal, we present ConstrainedMimic, a control framework that leverages 
+          whole-body kinematics and dynamics for real-time constraint enforcement within RL tracking policies. 
+          By integrating principles from operational space control and control barrier functions, we enable the 
+          satisfaction of arbitrary runtime constraints on both the kinematic reference motion and the underlying 
+          dynamics, with efficient computation at frequencies above 1 kHz. In whole-body motion-tracking experiments
+          in simulation and hardware, we demonstrate collision avoidance (both with the robot body and external obstacles),
+          joint limits, and center of mass stability constraints. By remaining consistent with the current contact mode
+          and tracking objectives, we minimally restrict the capabilities of the policy when constraints are active.
         </p>
       </div>
     </section>
