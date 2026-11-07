@@ -113,11 +113,13 @@ source scripts/setup_hardware.sh
 ## Citation
 
 ```
-@article{morton2026constrained,
+@inproceedings{morton2026constrained,
   author={Morton, Daniel and Mohnot, Pranit and Pavone, Marco},
   title={Constrained Whole-Body Tracking for Humanoid Robots},
-  journal={arXiv preprint arXiv:2606.00374},
+  booktitle={Conference on Robot Learning (CoRL)},
   year={2026},
+  note={In press},
+  url={https://arxiv.org/abs/2606.00374},
 }
 ```
 
